@@ -1,7 +1,7 @@
 using LibGit2Sharp;
 using System;
 
-namespace Task1._0._0
+namespace Task1._0._1
 {
     class Program
     {
@@ -14,8 +14,11 @@ namespace Task1._0._0
             Repository repository = new Repository(@"C:\GitHub\repository");
 
             NewCommit commits = new NewCommit(repository);
+            commits.printCommitInfo();
 
-            
+            NewBranch branches = new NewBranch(repository);
+
+
 
 
 
