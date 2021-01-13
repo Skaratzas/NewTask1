@@ -17,6 +17,7 @@ namespace Task1._0._1
             commits.printCommitInfo();
 
             NewBranch branches = new NewBranch(repository);
+            branches.printBranchInfo();
 
 
 
