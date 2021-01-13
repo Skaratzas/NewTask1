@@ -13,6 +13,8 @@ namespace Task1._0._0
 
             Repository repository = new Repository(@"C:\GitHub\repository");
 
+            NewCommit commits = new NewCommit(repository);
+
             
 
 
