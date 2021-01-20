@@ -1,12 +1,20 @@
 using LibGit2Sharp;
 using System;
+using System.Collections.Generic;
 
 namespace Task1._0._1
 {
     class NewBranch 
     {
         static string name;
-        Repository repository;        
+        Repository repository;
+        List<Commit> BranchCommit = new List<Commit>();
+
+        static String id;
+        static DateTime dateTime;
+        static string message;
+        static string author;
+  
 
         public NewBranch(Repository repository)
         {
@@ -27,9 +35,27 @@ namespace Task1._0._1
             foreach (var branch in branches)
             {
                 name = branch.FriendlyName;
-                Console.WriteLine(name);                
+                Console.WriteLine(name);
+               var commits = branch.Commits;
+               foreach(var commit in commits)
+                {
+                    BranchCommit.Add(commit);                                                     
+                }
+                foreach(var commit in BranchCommit)
+                {
+                    id = commit.Id.ToString().Substring(0, 6);
+                    dateTime = commit.Author.When.LocalDateTime;
+                    message = commit.Message;
+                    author = commit.Author.Name;
+
+                    Console.WriteLine(id + " " + dateTime + " " + message + " " + name);
+                }
+            
+
+
 
             }
         }
+
     }
 }
