@@ -34,14 +34,16 @@ namespace Task1._0._1
             Console.WriteLine("Commits: ");
             foreach (var commit in commits)
             {
-                id = commit.Id.ToString().Substring(0, 6);
+                id = commit.Id.ToString().Substring(0, 7);
                 dateTime = commit.Author.When.LocalDateTime;
                 message = commit.Message;
                 name = commit.Author.Name;
 
-                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);
-                                  
+                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);                                  
             }          
         }
+
+
+
     }
 }

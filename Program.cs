@@ -8,8 +8,8 @@ namespace Task1._0._1
         static void Main(string[] args)
         {
 
-            Repository.Clone("https://github.com/Skaratzas/repository", @"C:\GitHub\repository");
-            Repository.Init(@"C:\GitHub\git");
+          //  Repository.Clone("https://github.com/Skaratzas/NewTask1", @"C:\GitHub\repository");
+          //  Repository.Init(@"C:\GitHub\git");
 
             Repository repository = new Repository(@"C:\GitHub\repository");
 
@@ -18,12 +18,7 @@ namespace Task1._0._1
 
             NewBranch branches = new NewBranch(repository);
             branches.printBranchInfo();
-
-
-
-
-
-           
+          
         }
     }
 }
