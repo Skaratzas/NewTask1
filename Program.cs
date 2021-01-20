@@ -1,5 +1,6 @@
 using LibGit2Sharp;
 using System;
+using System.IO;
 
 namespace Task1._0._1
 {
@@ -8,8 +9,13 @@ namespace Task1._0._1
         static void Main(string[] args)
         {
 
-          //  Repository.Clone("https://github.com/Skaratzas/NewTask1", @"C:\GitHub\repository");
-          //  Repository.Init(@"C:\GitHub\git");
+            string root = @"C:\GitHub\repository";
+            if (!Directory.Exists(root))
+            {
+                Repository.Clone("https://github.com/Skaratzas/NewTask1", @"C:\GitHub\repository");
+                Repository.Init(@"C:\GitHub\git");
+            }
+           
 
             Repository repository = new Repository(@"C:\GitHub\repository");
 
