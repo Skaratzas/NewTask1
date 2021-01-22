@@ -21,18 +21,24 @@ namespace Task1._0._1
                 Repository.Clone("https://github.com/Skaratzas/NewTask1", root);
             }
 
-           
-            Repository.Init(@"C:\GitHub\git");
+
+            using (var repository = new Repository(root))
+            {
+                const string trackedBranchName = "origin/master";
+                var branch = repository.Branches[trackedBranchName];
+
+                Branch currentBranch = Commands.Checkout(repository, branch);
 
 
-            Repository repository = new Repository(@"C:\GitHub\repository");
+                Repository.Init(@"C:\GitHub\git");
 
-            NewCommit commits = new NewCommit(repository);
-            commits.printCommitInfo();
+                NewCommit commits = new NewCommit(repository);
+                commits.printCommitInfo();
 
-            NewBranch branches = new NewBranch(repository);
-            branches.printBranchInfo();
-           
+                NewBranch branches = new NewBranch(repository);
+                branches.printBranchInfo();
+            }
+
         }
     }
 }
