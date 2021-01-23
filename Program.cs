@@ -11,14 +11,14 @@ namespace Task1._0._1
 
             string root = @"C:\GitHub\repository";
 
-            if (Directory.Exists(root))
+            if (!Directory.Exists(root))
             {
-                Directory.Delete(root, true);              
+                Repository.Clone("https://github.com/Skaratzas/NewTask1", root);
             }
-
-
-            Repository.Clone("https://github.com/Skaratzas/NewTask1", root);
-
+            else
+            {
+                //TODO ... pull
+            }
 
             using (var repository = new Repository(root))
             {
@@ -32,7 +32,7 @@ namespace Task1._0._1
 
                 NewCommit commits = new NewCommit(repository);
                 commits.printCommitInfo();
-                commits.commitChanges(repository);
+                //commits.commitChanges(repository);
 
                 NewBranch branches = new NewBranch(repository);
                 branches.printBranchInfo();

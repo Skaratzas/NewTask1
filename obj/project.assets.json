@@ -1,7 +1,7 @@
 {
   "version": 3,
   "targets": {
-    ".NETCoreApp,Version=v3.1": {
+    ".NETCoreApp,Version=v3.0": {
       "LibGit2Sharp/0.26.2": {
         "type": "package",
         "dependencies": {
@@ -137,36 +137,39 @@
     }
   },
   "projectFileDependencyGroups": {
-    ".NETCoreApp,Version=v3.1": [
+    ".NETCoreApp,Version=v3.0": [
       "LibGit2Sharp >= 0.26.2"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Georgia\\.nuget\\packages\\": {}
+    "C:\\Users\\DimChib\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Task1\\Task1.0.1.csproj",
+      "projectUniqueName": "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\Task1.0.1.csproj",
       "projectName": "Task1.0.1",
-      "projectPath": "C:\\Task1\\Task1.0.1.csproj",
-      "packagesPath": "C:\\Users\\Georgia\\.nuget\\packages\\",
-      "outputPath": "C:\\Task1\\obj\\",
+      "projectPath": "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\Task1.0.1.csproj",
+      "packagesPath": "C:\\Users\\DimChib\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
       "configFilePaths": [
-        "C:\\Users\\Georgia\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\DimChib\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "netcoreapp3.1"
+        "netcoreapp3.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
+        "netcoreapp3.0": {
           "projectReferences": {}
         }
       },
@@ -177,8 +180,7 @@
       }
     },
     "frameworks": {
-      "netcoreapp3.1": {
-        "targetAlias": "netcoreapp3.1",
+      "netcoreapp3.0": {
         "dependencies": {
           "LibGit2Sharp": {
             "target": "Package",
@@ -200,7 +202,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"
       }
     }
   }

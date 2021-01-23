@@ -34,40 +34,27 @@ namespace Task1._0._1
 
             var commits = repository.Commits;
             Console.WriteLine("Commits: ");
+            Commit previousCommit = null;
             foreach (var commit in commits)
             {
+                if (previousCommit != null)
+                {
+                    var options = new CompareOptions { Similarity = true ? SimilarityOptions.Renames : SimilarityOptions.None };
+                    var test = repository.Diff.Compare<TreeChanges>(commit.Tree, previousCommit.Tree, options);
+                }
+                  
                 id = commit.Id.ToString().Substring(0, 7);
                 dateTime = commit.Author.When.LocalDateTime;
                 message = commit.Message;
                 name = commit.Author.Name;
 
-                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);                                  
-            }          
-        }
+                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);
+
+                previousCommit = commit;
 
 
-        public Task<TreeChanges> Compare(IRepository repository, string sha1, string sha2, bool detectRenames)
-        {
+            }
 
-            Guard.ArgumentNotNull(repository, nameof(repository)); 
-            Guard.ArgumentNotEmptyString(sha1, nameof(sha1)); 
-            Guard.ArgumentNotEmptyString(sha2, nameof(sha2)); 
-
-            return Task.Factory.StartNew(() => 
-            {
-            var options = new CompareOptions { Similarity = detectRenames ? SimilarityOptions.Renames : SimilarityOptions.None };
-            var commit1 = repository.Lookup<Commit>(sha1); 
-            var commit2 = repository.Lookup<Commit>(sha2);
-            if (commit1 != null && commit2 != null)
-                {
-                    return repository.Diff.Compare<TreeChanges>(commit1.Tree, commit2.Tree, options);
-               }
-            else
-                {
-                    return null;
-                }
-
-               });
         }
 
     }
