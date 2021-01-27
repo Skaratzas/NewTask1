@@ -24,9 +24,11 @@ namespace Task1._0._1
         
             using (var repository = new Repository(root))
             {
-                const string trackedBranchName = "origin/master";
-                var branch = repository.Branches[trackedBranchName];
 
+                Console.WriteLine("Choose a branch: ");
+                string chosenBranch = Console.ReadLine();
+             
+                var branch = repository.Branches[chosenBranch];
                 Branch currentBranch = Commands.Checkout(repository, branch);
 
 
