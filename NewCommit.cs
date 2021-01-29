@@ -1,9 +1,6 @@
 using LibGit2Sharp;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Task1._0._1
 {
@@ -14,7 +11,7 @@ namespace Task1._0._1
         static string message;
         static string name;
         Repository repository;
-       
+
 
         public NewCommit(String aId, DateTime aDateTime, string aMessage, string aName)
         {
@@ -29,8 +26,9 @@ namespace Task1._0._1
             this.repository = repository;
         }
 
-        
-        public void printCommitInfo() { 
+
+        public void printCommitInfo()
+        {
 
             var commits = repository.Commits;
             Console.WriteLine("Commits: ");
@@ -39,23 +37,28 @@ namespace Task1._0._1
             {
                 if (previousCommit != null)
                 {
-                    var options = new CompareOptions { Similarity = true ? SimilarityOptions.Renames : SimilarityOptions.None };
-                    var test = repository.Diff.Compare<TreeChanges>(commit.Tree, previousCommit.Tree, options);
+                    var patch = repository.Diff.Compare<Patch>(previousCommit.Tree, commit.Tree);
+
+                    foreach (var pec in patch)
+                    {
+                        Console.WriteLine("{0} Lines changed: {1} = ({2}+ and {3}-)",
+                            pec.Patch,
+                            pec.LinesAdded + pec.LinesDeleted,
+                            pec.LinesAdded,
+                            pec.LinesDeleted);
+                    }
                 }
-                  
+
                 id = commit.Id.ToString().Substring(0, 7);
                 dateTime = commit.Author.When.LocalDateTime;
                 message = commit.Message;
                 name = commit.Author.Name;
 
-                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);
+                Console.WriteLine("\n" + id + " " + dateTime + " " + message + " " + name);
 
                 previousCommit = commit;
-
-
             }
 
         }
-
     }
 }
