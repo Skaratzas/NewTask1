@@ -25,7 +25,7 @@ namespace Task1._0._1
             using (var repository = new Repository(root))
             {
                 Branch branch = null;
-      /*          do
+                do
                 {
                     try
                     {
@@ -41,13 +41,7 @@ namespace Task1._0._1
                         Console.WriteLine("Please try again \n");
                     }
                 } while (branch == null);
-
-*/
-                Console.WriteLine("Choose a branch: ");
-                String chosenBranch = Console.ReadLine();
-
-                branch = repository.Branches[chosenBranch];
-                Branch currentBranch = Commands.Checkout(repository, branch);
+             
 
                 Repository.Init(@"C:\GitHub\git");
 
