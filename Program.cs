@@ -24,13 +24,30 @@ namespace Task1._0._1
         
             using (var repository = new Repository(root))
             {
+                Branch branch = null;
+      /*          do
+                {
+                    try
+                    {
+                        Console.WriteLine("Choose a branch: ");
+                        String chosenBranch = Console.ReadLine();
 
+                        branch = repository.Branches[chosenBranch];
+                        Branch currentBranch = Commands.Checkout(repository, branch);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                        Console.WriteLine("Please try again \n");
+                    }
+                } while (branch == null);
+
+*/
                 Console.WriteLine("Choose a branch: ");
-                string chosenBranch = Console.ReadLine();
-             
-                var branch = repository.Branches[chosenBranch];
-                Branch currentBranch = Commands.Checkout(repository, branch);
+                String chosenBranch = Console.ReadLine();
 
+                branch = repository.Branches[chosenBranch];
+                Branch currentBranch = Commands.Checkout(repository, branch);
 
                 Repository.Init(@"C:\GitHub\git");
 
