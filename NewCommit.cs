@@ -37,7 +37,7 @@ namespace Task1._0._1
             {
                 if (previousCommit != null)
                 {
-                    var patch = repository.Diff.Compare<Patch>(previousCommit.Tree, commit.Tree);
+                    var patch = repository.Diff.Compare<Patch>(commit.Tree, previousCommit.Tree);
 
                     foreach (var pec in patch)
                     {
