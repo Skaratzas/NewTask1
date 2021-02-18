@@ -1,0 +1,1281 @@
+<?xml version="1.0" encoding="utf-8"?>
+<NewCommit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <addedLines>
+    <string>+        static string id;</string>
+    <string>+        Repository repository;        </string>
+    <string>+        List&lt;string&gt; addedLines = new List&lt;string&gt;();</string>
+    <string>+        List&lt;string&gt; removedLines = new List&lt;string&gt;();</string>
+    <string>+        public NewCommit(string aId, DateTime aDateTime, string aMessage, string aName)</string>
+    <string>+                    var patch = repository.Diff.Compare&lt;Patch&gt;(commit.Tree, previousCommit.Tree);</string>
+    <string>+                    {                     </string>
+    <string>+
++</string>
+    <string>+                        string input = pec.Patch;</string>
+    <string>+
++                        string addedPattern = @"^\+\s.*$";</string>
+    <string>+                        foreach (Match match in Regex.Matches(input, addedPattern, RegexOptions.Multiline))</string>
+    <string>+                        {</string>
+    <string>+                            addedLines.Add(match.Value);</string>
+    <string>+                        }</string>
+    <string>+
++                        string removedPattern = @"^\-\s.*$";</string>
+    <string>+                        foreach (Match match in Regex.Matches(input, removedPattern, RegexOptions.Multiline))</string>
+    <string>+                        {</string>
+    <string>+                            removedLines.Add(match.Value);</string>
+    <string>+                        }</string>
+    <string>+                      </string>
+    <string>+                    }                   </string>
+    <string>+
+                 previousCommit = commit;</string>
+    <string>+            }         </string>
+    <string>+                do</string>
+    <string>+             </string>
+    <string>+                Branch branch = null;</string>
+    <string>+      /*          do</string>
+    <string>+                {</string>
+    <string>+                    try</string>
+    <string>+                    {</string>
+    <string>+                        Console.WriteLine("Choose a branch: ");</string>
+    <string>+                        String chosenBranch = Console.ReadLine();</string>
+    <string>+                        branch = repository.Branches[chosenBranch];</string>
+    <string>+                        Branch currentBranch = Commands.Checkout(repository, branch);</string>
+    <string>+                    }</string>
+    <string>+                    catch (Exception e)</string>
+    <string>+                    {</string>
+    <string>+                        Console.WriteLine(e.Message);</string>
+    <string>+                        Console.WriteLine("Please try again \n");</string>
+    <string>+                    }</string>
+    <string>+                } while (branch == null);</string>
+    <string>+
++*/</string>
+    <string>+                String chosenBranch = Console.ReadLine();</string>
+    <string>+                branch = repository.Branches[chosenBranch];</string>
+    <string>+                Branch currentBranch = Commands.Checkout(repository, branch);</string>
+    <string>+
+ </string>
+    <string>+
+ </string>
+    <string>+
++        public void printCommitInfo()</string>
+    <string>+        {</string>
+    <string>+                    var patch = repository.Diff.Compare&lt;Patch&gt;(previousCommit.Tree, commit.Tree);</string>
+    <string>+
++                    foreach (var pec in patch)</string>
+    <string>+                    {</string>
+    <string>+                        Console.WriteLine("{0} Lines changed: {1} = ({2}+ and {3}-)",</string>
+    <string>+                            pec.Patch,</string>
+    <string>+                            pec.LinesAdded + pec.LinesDeleted,</string>
+    <string>+                            pec.LinesAdded,</string>
+    <string>+                            pec.LinesDeleted);</string>
+    <string>+                    }</string>
+    <string>+
+                 id = commit.Id.ToString().Substring(0, 7);</string>
+    <string>+                Console.WriteLine("\n" + id + " " + dateTime + " " + message + " " + name);</string>
+    <string>+                Console.WriteLine("Choose a branch: ");</string>
+    <string>+                string chosenBranch = Console.ReadLine();</string>
+    <string>+             </string>
+    <string>+                var branch = repository.Branches[chosenBranch];</string>
+    <string>+
+ namespace Task1._0._1</string>
+    <string>+    {     </string>
+    <string>+                gitPull(root);</string>
+    <string>+        </string>
+    <string>+                </string>
+    <string>+        }</string>
+    <string>+
++</string>
+    <string>+        public static void gitPull(string root)</string>
+    <string>+        {</string>
+    <string>+            var startInfo = new System.Diagnostics.ProcessStartInfo</string>
+    <string>+            {</string>
+    <string>+                UseShellExecute = false,</string>
+    <string>+                RedirectStandardOutput = true,</string>
+    <string>+                FileName = "git.exe",</string>
+    <string>+                Arguments = "pull",</string>
+    <string>+                WorkingDirectory = root,</string>
+    <string>+            };</string>
+    <string>+
++            var process = System.Diagnostics.Process.Start(startInfo);</string>
+    <string>+            string output = process.StandardOutput.ReadToEnd();</string>
+    <string>+            Console.WriteLine(output);</string>
+    <string>+            process.WaitForExit();</string>
+    <string>+
+     }</string>
+    <string>+            Commit previousCommit = null;</string>
+    <string>+                if (previousCommit != null)</string>
+    <string>+                {</string>
+    <string>+                    var options = new CompareOptions { Similarity = true ? SimilarityOptions.Renames : SimilarityOptions.None };</string>
+    <string>+                    var test = repository.Diff.Compare&lt;TreeChanges&gt;(commit.Tree, previousCommit.Tree, options);</string>
+    <string>+                }</string>
+    <string>+                  </string>
+    <string>+                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);</string>
+    <string>+                previousCommit = commit;</string>
+    <string>+            }</string>
+    <string>+            if (!Directory.Exists(root))</string>
+    <string>+                Repository.Clone("https://github.com/Skaratzas/NewTask1", root);</string>
+    <string>+            }</string>
+    <string>+            else</string>
+    <string>+            {</string>
+    <string>+                //TODO ... pull</string>
+    <string>+                //commits.commitChanges(repository);</string>
+    <string>+    &lt;TargetFramework&gt;netcoreapp3.0&lt;/TargetFramework&gt;</string>
+    <string>+    "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\Task1.0.1.csproj": {}</string>
+    <string>+    "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\Task1.0.1.csproj": {</string>
+    <string>+        "projectUniqueName": "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\Task1.0.1.csproj",</string>
+    <string>+        "projectPath": "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\Task1.0.1.csproj",</string>
+    <string>+        "packagesPath": "C:\\Users\\DimChib\\.nuget\\packages\\",</string>
+    <string>+        "outputPath": "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\obj\\",</string>
+    <string>+        "fallbackFolders": [</string>
+    <string>+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"</string>
+    <string>+        ],</string>
+    <string>+          "C:\\Users\\DimChib\\AppData\\Roaming\\NuGet\\NuGet.Config",</string>
+    <string>+          "netcoreapp3.0"</string>
+    <string>+          "netcoreapp3.0": {</string>
+    <string>+        "netcoreapp3.0": {</string>
+    <string>+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"</string>
+    <string>+    &lt;NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' "&gt;C:\Users\DimChib\.nuget\packages\;C:\Program Files\dotnet\sdk\NuGetFallbackFolder&lt;/NuGetPackageFolders&gt;</string>
+    <string>+    &lt;NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' "&gt;5.2.0&lt;/NuGetToolVersion&gt;</string>
+    <string>+    ".NETCoreApp,Version=v3.0": {</string>
+    <string>+    ".NETCoreApp,Version=v3.0": [</string>
+    <string>+    "C:\\Users\\DimChib\\.nuget\\packages\\": {},</string>
+    <string>+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}</string>
+    <string>+      "projectUniqueName": "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\Task1.0.1.csproj",</string>
+    <string>+      "projectPath": "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\Task1.0.1.csproj",</string>
+    <string>+      "packagesPath": "C:\\Users\\DimChib\\.nuget\\packages\\",</string>
+    <string>+      "outputPath": "C:\\Users\\DimChib\\Documents\\Stavros\\NewTask1\\obj\\",</string>
+    <string>+      "fallbackFolders": [</string>
+    <string>+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"</string>
+    <string>+      ],</string>
+    <string>+        "C:\\Users\\DimChib\\AppData\\Roaming\\NuGet\\NuGet.Config",</string>
+    <string>+        "netcoreapp3.0"</string>
+    <string>+        "netcoreapp3.0": {</string>
+    <string>+      "netcoreapp3.0": {</string>
+    <string>+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.0.100\\RuntimeIdentifierGraph.json"</string>
+    <string>+
++# User-specific files</string>
+    <string>+
++# User-specific files (MonoDevelop/Xamarin Studio)</string>
+    <string>+
++# Mono auto generated files</string>
+    <string>+
++# Build results</string>
+    <string>+
++# Visual Studio 2015/2017 cache/options directory</string>
+    <string>+
++# Visual Studio 2017 auto generated files</string>
+    <string>+
++# MSTest test Results</string>
+    <string>+
++# NUnit</string>
+    <string>+
++# Build Results of an ATL Project</string>
+    <string>+
++# Benchmark Results</string>
+    <string>+
++# .NET Core</string>
+    <string>+
++# ASP.NET Scaffolding</string>
+    <string>+
++# StyleCop</string>
+    <string>+
++# Files built by Visual Studio</string>
+    <string>+
++# Chutzpah Test files</string>
+    <string>+
++# Visual C++ cache files</string>
+    <string>+
++# Visual Studio profiler</string>
+    <string>+
++# Visual Studio Trace Files</string>
+    <string>+
++# TFS 2012 Local Workspace</string>
+    <string>+
++# Guidance Automation Toolkit</string>
+    <string>+
++# ReSharper is a .NET coding add-in</string>
+    <string>+
++# TeamCity is a build add-in</string>
+    <string>+
++# DotCover is a Code Coverage Tool</string>
+    <string>+
++# AxoCover is a Code Coverage Tool</string>
+    <string>+
++# Coverlet is a free, cross platform Code Coverage Tool</string>
+    <string>+
++# Visual Studio code coverage results</string>
+    <string>+
++# NCrunch</string>
+    <string>+
++# MightyMoose</string>
+    <string>+
++# Web workbench (sass)</string>
+    <string>+
++# Installshield output folder</string>
+    <string>+
++# DocProject is a documentation generator add-in</string>
+    <string>+
++# Click-Once directory</string>
+    <string>+
++# Publish Web Output</string>
+    <string>+
++# Microsoft Azure Web App publish settings. Comment the next line if you want to</string>
+    <string>+
++# NuGet Packages</string>
+    <string>+
++# Microsoft Azure Build Output</string>
+    <string>+
++# Microsoft Azure Emulator</string>
+    <string>+
++# Windows Store app package directories and files</string>
+    <string>+
++# Visual Studio cache files</string>
+    <string>+
++# Others</string>
+    <string>+
++# Including strong name files can present a security risk</string>
+    <string>+
++# Since there are multiple workflows, uncomment next line to ignore bower_components</string>
+    <string>+
++# RIA/Silverlight projects</string>
+    <string>+
++# Backup &amp; report files from converting an old project file</string>
+    <string>+
++# SQL Server files</string>
+    <string>+
++# Business Intelligence projects</string>
+    <string>+
++# Microsoft Fakes</string>
+    <string>+
++# GhostDoc plugin setting file</string>
+    <string>+
++# Node.js Tools for Visual Studio</string>
+    <string>+
++# Visual Studio 6 build log</string>
+    <string>+
++# Visual Studio 6 workspace options file</string>
+    <string>+
++# Visual Studio 6 auto-generated workspace file (contains which files were open etc.)</string>
+    <string>+
++# Visual Studio LightSwitch build output</string>
+    <string>+
++# Paket dependency manager</string>
+    <string>+
++# FAKE - F# Make</string>
+    <string>+
++# CodeRush personal settings</string>
+    <string>+
++# Python Tools for Visual Studio (PTVS)</string>
+    <string>+
++# Cake - Uncomment if you are using it</string>
+    <string>+
++# Tabs Studio</string>
+    <string>+
++# Telerik's JustMock configuration file</string>
+    <string>+
++# BizTalk build output</string>
+    <string>+
++# OpenCover UI analysis results</string>
+    <string>+
++# Azure Stream Analytics local run output</string>
+    <string>+
++# MSBuild Binary and Structured Log</string>
+    <string>+
++# NVidia Nsight GPU debugger configuration file</string>
+    <string>+
++# MFractors (Xamarin productivity tool) working folder</string>
+    <string>+
++# Local History for Visual Studio</string>
+    <string>+
++# BeatPulse healthcheck temp database</string>
+    <string>+
++# Backup folder for Package Reference Convert tool in Visual Studio 2017</string>
+    <string>+
++# Ionide (cross platform F# VS Code tools) working folder</string>
+    <string>+
++# Fody - auto-generated XML schema</string>
+    <string>+               });</string>
+    <string>+  "ExpandedNodes": [</string>
+    <string>+    ""</string>
+    <string>+  ],</string>
+    <string>+  "PreviewInSolutionExplorer": false</string>
+    <string>+    // Use IntelliSense to learn about possible attributes.</string>
+    <string>+    // Hover to view descriptions of existing attributes.</string>
+    <string>+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387</string>
+    <string>+    "version": "0.2.0",</string>
+    <string>+    "configurations": [</string>
+    <string>+        {</string>
+    <string>+            "name": ".NET Core Launch (console)",</string>
+    <string>+            "type": "coreclr",</string>
+    <string>+            "request": "launch",</string>
+    <string>+            "WARNING01": "*********************************************************************************",</string>
+    <string>+            "WARNING02": "The C# extension was unable to automatically decode projects in the current",</string>
+    <string>+            "WARNING03": "workspace to create a runnable launch.json file. A template launch.json file has",</string>
+    <string>+            "WARNING04": "been created as a placeholder.",</string>
+    <string>+            "WARNING05": "",</string>
+    <string>+            "WARNING06": "If OmniSharp is currently unable to load your project, you can attempt to resolve",</string>
+    <string>+            "WARNING07": "this by restoring any missing project dependencies (example: run 'dotnet restore')",</string>
+    <string>+            "WARNING08": "and by fixing any reported errors from building the projects in your workspace.",</string>
+    <string>+            "WARNING09": "If this allows OmniSharp to now load your project then --",</string>
+    <string>+            "WARNING10": "  * Delete this file",</string>
+    <string>+            "WARNING11": "  * Open the Visual Studio Code command palette (View-&gt;Command Palette)",</string>
+    <string>+            "WARNING12": "  * run the command: '.NET: Generate Assets for Build and Debug'.",</string>
+    <string>+            "WARNING13": "",</string>
+    <string>+            "WARNING14": "If your project requires a more complex launch configuration, you may wish to delete",</string>
+    <string>+            "WARNING15": "this configuration and pick a different template using the 'Add Configuration...'",</string>
+    <string>+            "WARNING16": "button at the bottom of this file.",</string>
+    <string>+            "WARNING17": "*********************************************************************************",</string>
+    <string>+            "preLaunchTask": "build",</string>
+    <string>+            "program": "${workspaceFolder}/bin/Debug/&lt;insert-target-framework-here&gt;/&lt;insert-project-name-here&gt;.dll",</string>
+    <string>+            "args": [],</string>
+    <string>+            "cwd": "${workspaceFolder}",</string>
+    <string>+            "console": "internalConsole",</string>
+    <string>+            "stopAtEntry": false</string>
+    <string>+        },</string>
+    <string>+        {</string>
+    <string>+            "name": ".NET Core Attach",</string>
+    <string>+            "type": "coreclr",</string>
+    <string>+            "request": "attach",</string>
+    <string>+            "processId": "${command:pickProcess}"</string>
+    <string>+        }</string>
+    <string>+    ]</string>
+    <string>+    // See https://go.microsoft.com/fwlink/?LinkId=733558</string>
+    <string>+    // for the documentation about the tasks.json format</string>
+    <string>+    "version": "2.0.0",</string>
+    <string>+    "tasks": [</string>
+    <string>+        {</string>
+    <string>+            "label": "build",</string>
+    <string>+            "command": "dotnet",</string>
+    <string>+            "type": "shell",</string>
+    <string>+            "args": [</string>
+    <string>+                "build",</string>
+    <string>+                // Ask dotnet build to generate full paths for file names.</string>
+    <string>+                "/property:GenerateFullPaths=true",</string>
+    <string>+                // Do not generate summary otherwise it leads to duplicate errors in Problems panel</string>
+    <string>+                "/consoleloggerparameters:NoSummary"</string>
+    <string>+            ],</string>
+    <string>+            "group": "build",</string>
+    <string>+            "presentation": {</string>
+    <string>+                "reveal": "silent"</string>
+    <string>+            },</string>
+    <string>+            "problemMatcher": "$msCompile"</string>
+    <string>+        }</string>
+    <string>+    ]</string>
+    <string>+        public Task&lt;TreeChanges&gt; Compare(IRepository repository, string sha1, string sha2, bool detectRenames)</string>
+    <string>+        {</string>
+    <string>+
++            Guard.ArgumentNotNull(repository, nameof(repository)); </string>
+    <string>+            Guard.ArgumentNotEmptyString(sha1, nameof(sha1)); </string>
+    <string>+            Guard.ArgumentNotEmptyString(sha2, nameof(sha2)); </string>
+    <string>+
++            return Task.Factory.StartNew(() =&gt; </string>
+    <string>+            {</string>
+    <string>+            var options = new CompareOptions { Similarity = detectRenames ? SimilarityOptions.Renames : SimilarityOptions.None };</string>
+    <string>+            var commit1 = repository.Lookup&lt;Commit&gt;(sha1); </string>
+    <string>+            var commit2 = repository.Lookup&lt;Commit&gt;(sha2);</string>
+    <string>+            if (commit1 != null &amp;&amp; commit2 != null)</string>
+    <string>+                {</string>
+    <string>+                    return repository.Diff.Compare&lt;TreeChanges&gt;(commit1.Tree, commit2.Tree, options);</string>
+    <string>+               }</string>
+    <string>+            else</string>
+    <string>+                {</string>
+    <string>+                    return null;</string>
+    <string>+                }</string>
+    <string>+
++});</string>
+    <string>+        }</string>
+    <string>+
++</string>
+    <string>+
++</string>
+    <string>+
++</string>
+    <string>+
+ </string>
+    <string>+
++</string>
+    <string>+                Directory.Delete(root, true);              </string>
+    <string>+            Repository.Clone("https://github.com/Skaratzas/NewTask1", root);</string>
+    <string>+
++</string>
+    <string>+                commits.commitChanges(repository);</string>
+    <string>+  "runtimeTarget": {</string>
+    <string>+    "name": ".NETCoreApp,Version=v3.1",</string>
+    <string>+    "signature": ""</string>
+    <string>+  },</string>
+    <string>+  "compilationOptions": {},</string>
+    <string>+  "targets": {</string>
+    <string>+    ".NETCoreApp,Version=v3.1": {</string>
+    <string>+      "Task1.0.1/1.0.0": {</string>
+    <string>+        "dependencies": {</string>
+    <string>+          "LibGit2Sharp": "0.26.2"</string>
+    <string>+        },</string>
+    <string>+        "runtime": {</string>
+    <string>+          "Task1.0.1.dll": {}</string>
+    <string>+        }</string>
+    <string>+      },</string>
+    <string>+      "LibGit2Sharp/0.26.2": {</string>
+    <string>+        "dependencies": {</string>
+    <string>+          "LibGit2Sharp.NativeBinaries": "2.0.306"</string>
+    <string>+        },</string>
+    <string>+        "runtime": {</string>
+    <string>+          "lib/netstandard2.0/LibGit2Sharp.dll": {</string>
+    <string>+            "assemblyVersion": "0.26.0.0",</string>
+    <string>+            "fileVersion": "0.26.2.97"</string>
+    <string>+          }</string>
+    <string>+        }</string>
+    <string>+      },</string>
+    <string>+      "LibGit2Sharp.NativeBinaries/2.0.306": {</string>
+    <string>+        "runtimeTargets": {</string>
+    <string>+          "runtimes/alpine-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "rid": "alpine-x64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/alpine.3.9-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "rid": "alpine.3.9-x64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/debian-arm64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "rid": "debian-arm64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/debian.9-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "rid": "debian.9-x64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/fedora-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "rid": "fedora-x64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/linux-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "rid": "linux-x64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/osx/native/libgit2-106a5f2.dylib": {</string>
+    <string>+            "rid": "osx",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/rhel-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "rid": "rhel-x64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/ubuntu.16.04-arm64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "rid": "ubuntu.16.04-arm64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/ubuntu.18.04-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "rid": "ubuntu.18.04-x64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/win-x64/native/git2-106a5f2.dll": {</string>
+    <string>+            "rid": "win-x64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.28.4.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/win-x64/native/git2-106a5f2.pdb": {</string>
+    <string>+            "rid": "win-x64",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/win-x86/native/git2-106a5f2.dll": {</string>
+    <string>+            "rid": "win-x86",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.28.4.0"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/win-x86/native/git2-106a5f2.pdb": {</string>
+    <string>+            "rid": "win-x86",</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "fileVersion": "0.0.0.0"</string>
+    <string>+          }</string>
+    <string>+        }</string>
+    <string>+      }</string>
+    <string>+    }</string>
+    <string>+  },</string>
+    <string>+  "libraries": {</string>
+    <string>+    "Task1.0.1/1.0.0": {</string>
+    <string>+      "type": "project",</string>
+    <string>+      "serviceable": false,</string>
+    <string>+      "sha512": ""</string>
+    <string>+    },</string>
+    <string>+    "LibGit2Sharp/0.26.2": {</string>
+    <string>+      "type": "package",</string>
+    <string>+      "serviceable": true,</string>
+    <string>+      "sha512": "sha512-qHLhuI8VEtMf7jiurT/Ypquh37S6ngllCx+aq9uqOY2evok7Fb2AzhJgvNctsXOzHaJwveBs+30sPQJFn/pISg==",</string>
+    <string>+      "path": "libgit2sharp/0.26.2",</string>
+    <string>+      "hashPath": "libgit2sharp.0.26.2.nupkg.sha512"</string>
+    <string>+    },</string>
+    <string>+    "LibGit2Sharp.NativeBinaries/2.0.306": {</string>
+    <string>+      "type": "package",</string>
+    <string>+      "serviceable": true,</string>
+    <string>+      "sha512": "sha512-LY9nyPE2X/eLl69ttuDPFFlKR8b5KXlqYej1YR1YmqmhF8Izo+vPX90q5ouOO5YGCf5d4lDUOC0x2yMWw00P7Q==",</string>
+    <string>+      "path": "libgit2sharp.nativebinaries/2.0.306",</string>
+    <string>+      "hashPath": "libgit2sharp.nativebinaries.2.0.306.nupkg.sha512"</string>
+    <string>+    }</string>
+    <string>+  }</string>
+    <string>+  "runtimeOptions": {</string>
+    <string>+    "additionalProbingPaths": [</string>
+    <string>+      "C:\\Users\\Georgia\\.dotnet\\store\\|arch|\\|tfm|",</string>
+    <string>+      "C:\\Users\\Georgia\\.nuget\\packages"</string>
+    <string>+    ]</string>
+    <string>+  }</string>
+    <string>+  "runtimeOptions": {</string>
+    <string>+    "tfm": "netcoreapp3.1",</string>
+    <string>+    "framework": {</string>
+    <string>+      "name": "Microsoft.NETCore.App",</string>
+    <string>+      "version": "3.1.0"</string>
+    <string>+    }</string>
+    <string>+  }</string>
+    <string>+
++using System;</string>
+    <string>+
++[assembly: System.Reflection.AssemblyCompanyAttribute("Task1.0.1")]</string>
+    <string>+
++// Generated by the MSBuild WriteCodeFragment class.</string>
+    <string>+
+</string>
+    <string>+
++using System;</string>
+    <string>+
++[assembly: System.Reflection.AssemblyCompanyAttribute("Task1.0.1")]</string>
+    <string>+
++// Generated by the MSBuild WriteCodeFragment class.</string>
+    <string>+
+</string>
+    <string>+  "format": 1,</string>
+    <string>+  "restore": {</string>
+    <string>+    "C:\\Task1\\Task1.0.1.csproj": {}</string>
+    <string>+  },</string>
+    <string>+  "projects": {</string>
+    <string>+    "C:\\Task1\\Task1.0.1.csproj": {</string>
+    <string>+      "version": "1.0.0",</string>
+    <string>+      "restore": {</string>
+    <string>+        "projectUniqueName": "C:\\Task1\\Task1.0.1.csproj",</string>
+    <string>+        "projectName": "Task1.0.1",</string>
+    <string>+        "projectPath": "C:\\Task1\\Task1.0.1.csproj",</string>
+    <string>+        "packagesPath": "C:\\Users\\Georgia\\.nuget\\packages\\",</string>
+    <string>+        "outputPath": "C:\\Task1\\obj\\",</string>
+    <string>+        "projectStyle": "PackageReference",</string>
+    <string>+        "configFilePaths": [</string>
+    <string>+          "C:\\Users\\Georgia\\AppData\\Roaming\\NuGet\\NuGet.Config",</string>
+    <string>+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"</string>
+    <string>+        ],</string>
+    <string>+        "originalTargetFrameworks": [</string>
+    <string>+          "netcoreapp3.1"</string>
+    <string>+        ],</string>
+    <string>+        "sources": {</string>
+    <string>+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},</string>
+    <string>+          "https://api.nuget.org/v3/index.json": {}</string>
+    <string>+        },</string>
+    <string>+        "frameworks": {</string>
+    <string>+          "netcoreapp3.1": {</string>
+    <string>+            "targetAlias": "netcoreapp3.1",</string>
+    <string>+            "projectReferences": {}</string>
+    <string>+          }</string>
+    <string>+        },</string>
+    <string>+        "warningProperties": {</string>
+    <string>+          "warnAsError": [</string>
+    <string>+            "NU1605"</string>
+    <string>+          ]</string>
+    <string>+        }</string>
+    <string>+      },</string>
+    <string>+      "frameworks": {</string>
+    <string>+        "netcoreapp3.1": {</string>
+    <string>+          "targetAlias": "netcoreapp3.1",</string>
+    <string>+          "dependencies": {</string>
+    <string>+            "LibGit2Sharp": {</string>
+    <string>+              "target": "Package",</string>
+    <string>+              "version": "[0.26.2, )"</string>
+    <string>+            }</string>
+    <string>+          },</string>
+    <string>+          "imports": [</string>
+    <string>+            "net461",</string>
+    <string>+            "net462",</string>
+    <string>+            "net47",</string>
+    <string>+            "net471",</string>
+    <string>+            "net472",</string>
+    <string>+            "net48"</string>
+    <string>+          ],</string>
+    <string>+          "assetTargetFallback": true,</string>
+    <string>+          "warn": true,</string>
+    <string>+          "frameworkReferences": {</string>
+    <string>+            "Microsoft.NETCore.App": {</string>
+    <string>+              "privateAssets": "all"</string>
+    <string>+            }</string>
+    <string>+          },</string>
+    <string>+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"</string>
+    <string>+        }</string>
+    <string>+      }</string>
+    <string>+    }</string>
+    <string>+  }</string>
+    <string>+  &lt;PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' "&gt;</string>
+    <string>+    &lt;RestoreSuccess Condition=" '$(RestoreSuccess)' == '' "&gt;True&lt;/RestoreSuccess&gt;</string>
+    <string>+    &lt;RestoreTool Condition=" '$(RestoreTool)' == '' "&gt;NuGet&lt;/RestoreTool&gt;</string>
+    <string>+    &lt;ProjectAssetsFile Condition=" '$(ProjectAssetsFile)' == '' "&gt;$(MSBuildThisFileDirectory)project.assets.json&lt;/ProjectAssetsFile&gt;</string>
+    <string>+    &lt;NuGetPackageRoot Condition=" '$(NuGetPackageRoot)' == '' "&gt;$(UserProfile)\.nuget\packages\&lt;/NuGetPackageRoot&gt;</string>
+    <string>+    &lt;NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' "&gt;C:\Users\Georgia\.nuget\packages\&lt;/NuGetPackageFolders&gt;</string>
+    <string>+    &lt;NuGetProjectStyle Condition=" '$(NuGetProjectStyle)' == '' "&gt;PackageReference&lt;/NuGetProjectStyle&gt;</string>
+    <string>+    &lt;NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' "&gt;5.8.0&lt;/NuGetToolVersion&gt;</string>
+    <string>+  &lt;/PropertyGroup&gt;</string>
+    <string>+  &lt;ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' "&gt;</string>
+    <string>+    &lt;SourceRoot Include="$([MSBuild]::EnsureTrailingSlash($(NuGetPackageFolders)))" /&gt;</string>
+    <string>+  &lt;/ItemGroup&gt;</string>
+    <string>+  &lt;PropertyGroup&gt;</string>
+    <string>+    &lt;MSBuildAllProjects&gt;$(MSBuildAllProjects);$(MSBuildThisFileFullPath)&lt;/MSBuildAllProjects&gt;</string>
+    <string>+  &lt;/PropertyGroup&gt;</string>
+    <string>+  &lt;ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' "&gt;</string>
+    <string>+    &lt;Import Project="$(NuGetPackageRoot)libgit2sharp.nativebinaries\2.0.306\build\LibGit2Sharp.NativeBinaries.props" Condition="Exists('$(NuGetPackageRoot)libgit2sharp.nativebinaries\2.0.306\build\LibGit2Sharp.NativeBinaries.props')" /&gt;</string>
+    <string>+  &lt;/ImportGroup&gt;</string>
+    <string>+  &lt;PropertyGroup&gt;</string>
+    <string>+    &lt;MSBuildAllProjects&gt;$(MSBuildAllProjects);$(MSBuildThisFileFullPath)&lt;/MSBuildAllProjects&gt;</string>
+    <string>+  &lt;/PropertyGroup&gt;</string>
+    <string>+  "version": 3,</string>
+    <string>+  "targets": {</string>
+    <string>+    ".NETCoreApp,Version=v3.1": {</string>
+    <string>+      "LibGit2Sharp/0.26.2": {</string>
+    <string>+        "type": "package",</string>
+    <string>+        "dependencies": {</string>
+    <string>+          "LibGit2Sharp.NativeBinaries": "[2.0.306]"</string>
+    <string>+        },</string>
+    <string>+        "compile": {</string>
+    <string>+          "lib/netstandard2.0/LibGit2Sharp.dll": {}</string>
+    <string>+        },</string>
+    <string>+        "runtime": {</string>
+    <string>+          "lib/netstandard2.0/LibGit2Sharp.dll": {}</string>
+    <string>+        }</string>
+    <string>+      },</string>
+    <string>+      "LibGit2Sharp.NativeBinaries/2.0.306": {</string>
+    <string>+        "type": "package",</string>
+    <string>+        "build": {</string>
+    <string>+          "build/LibGit2Sharp.NativeBinaries.props": {}</string>
+    <string>+        },</string>
+    <string>+        "buildMultiTargeting": {</string>
+    <string>+          "buildMultiTargeting/LibGit2Sharp.NativeBinaries.props": {}</string>
+    <string>+        },</string>
+    <string>+        "runtimeTargets": {</string>
+    <string>+          "runtimes/alpine-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "alpine-x64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/alpine.3.9-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "alpine.3.9-x64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/debian-arm64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "debian-arm64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/debian.9-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "debian.9-x64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/fedora-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "fedora-x64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/linux-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "linux-x64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/osx/native/libgit2-106a5f2.dylib": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "osx"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/rhel-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "rhel-x64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/ubuntu.16.04-arm64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "ubuntu.16.04-arm64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/ubuntu.18.04-x64/native/libgit2-106a5f2.so": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "ubuntu.18.04-x64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/win-x64/native/git2-106a5f2.dll": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "win-x64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/win-x64/native/git2-106a5f2.pdb": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "win-x64"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/win-x86/native/git2-106a5f2.dll": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "win-x86"</string>
+    <string>+          },</string>
+    <string>+          "runtimes/win-x86/native/git2-106a5f2.pdb": {</string>
+    <string>+            "assetType": "native",</string>
+    <string>+            "rid": "win-x86"</string>
+    <string>+          }</string>
+    <string>+        }</string>
+    <string>+      }</string>
+    <string>+    }</string>
+    <string>+  },</string>
+    <string>+  "libraries": {</string>
+    <string>+    "LibGit2Sharp/0.26.2": {</string>
+    <string>+      "sha512": "qHLhuI8VEtMf7jiurT/Ypquh37S6ngllCx+aq9uqOY2evok7Fb2AzhJgvNctsXOzHaJwveBs+30sPQJFn/pISg==",</string>
+    <string>+      "type": "package",</string>
+    <string>+      "path": "libgit2sharp/0.26.2",</string>
+    <string>+      "files": [</string>
+    <string>+        ".nupkg.metadata",</string>
+    <string>+        ".signature.p7s",</string>
+    <string>+        "App_Readme/CHANGES.md",</string>
+    <string>+        "App_Readme/LICENSE.md",</string>
+    <string>+        "App_Readme/README.md",</string>
+    <string>+        "lib/net46/LibGit2Sharp.dll",</string>
+    <string>+        "lib/net46/LibGit2Sharp.pdb",</string>
+    <string>+        "lib/net46/LibGit2Sharp.xml",</string>
+    <string>+        "lib/netstandard2.0/LibGit2Sharp.dll",</string>
+    <string>+        "lib/netstandard2.0/LibGit2Sharp.pdb",</string>
+    <string>+        "lib/netstandard2.0/LibGit2Sharp.xml",</string>
+    <string>+        "libgit2sharp.0.26.2.nupkg.sha512",</string>
+    <string>+        "libgit2sharp.nuspec"</string>
+    <string>+      ]</string>
+    <string>+    },</string>
+    <string>+    "LibGit2Sharp.NativeBinaries/2.0.306": {</string>
+    <string>+      "sha512": "LY9nyPE2X/eLl69ttuDPFFlKR8b5KXlqYej1YR1YmqmhF8Izo+vPX90q5ouOO5YGCf5d4lDUOC0x2yMWw00P7Q==",</string>
+    <string>+      "type": "package",</string>
+    <string>+      "path": "libgit2sharp.nativebinaries/2.0.306",</string>
+    <string>+      "files": [</string>
+    <string>+        ".nupkg.metadata",</string>
+    <string>+        ".signature.p7s",</string>
+    <string>+        "build/LibGit2Sharp.NativeBinaries.props",</string>
+    <string>+        "build/net46/LibGit2Sharp.NativeBinaries.props",</string>
+    <string>+        "buildMultiTargeting/LibGit2Sharp.NativeBinaries.props",</string>
+    <string>+        "libgit2/LibGit2Sharp.dll.config",</string>
+    <string>+        "libgit2/libgit2.license.txt",</string>
+    <string>+        "libgit2/libgit2_hash.txt",</string>
+    <string>+        "libgit2sharp.nativebinaries.2.0.306.nupkg.sha512",</string>
+    <string>+        "libgit2sharp.nativebinaries.nuspec",</string>
+    <string>+        "runtimes/alpine-x64/native/libgit2-106a5f2.so",</string>
+    <string>+        "runtimes/alpine.3.9-x64/native/libgit2-106a5f2.so",</string>
+    <string>+        "runtimes/debian-arm64/native/libgit2-106a5f2.so",</string>
+    <string>+        "runtimes/debian.9-x64/native/libgit2-106a5f2.so",</string>
+    <string>+        "runtimes/fedora-x64/native/libgit2-106a5f2.so",</string>
+    <string>+        "runtimes/linux-x64/native/libgit2-106a5f2.so",</string>
+    <string>+        "runtimes/osx/native/libgit2-106a5f2.dylib",</string>
+    <string>+        "runtimes/rhel-x64/native/libgit2-106a5f2.so",</string>
+    <string>+        "runtimes/ubuntu.16.04-arm64/native/libgit2-106a5f2.so",</string>
+    <string>+        "runtimes/ubuntu.18.04-x64/native/libgit2-106a5f2.so",</string>
+    <string>+        "runtimes/win-x64/native/git2-106a5f2.dll",</string>
+    <string>+        "runtimes/win-x64/native/git2-106a5f2.pdb",</string>
+    <string>+        "runtimes/win-x86/native/git2-106a5f2.dll",</string>
+    <string>+        "runtimes/win-x86/native/git2-106a5f2.pdb"</string>
+    <string>+      ]</string>
+    <string>+    }</string>
+    <string>+  },</string>
+    <string>+  "projectFileDependencyGroups": {</string>
+    <string>+    ".NETCoreApp,Version=v3.1": [</string>
+    <string>+      "LibGit2Sharp &gt;= 0.26.2"</string>
+    <string>+    ]</string>
+    <string>+  },</string>
+    <string>+  "packageFolders": {</string>
+    <string>+    "C:\\Users\\Georgia\\.nuget\\packages\\": {}</string>
+    <string>+  },</string>
+    <string>+  "project": {</string>
+    <string>+    "version": "1.0.0",</string>
+    <string>+    "restore": {</string>
+    <string>+      "projectUniqueName": "C:\\Task1\\Task1.0.1.csproj",</string>
+    <string>+      "projectName": "Task1.0.1",</string>
+    <string>+      "projectPath": "C:\\Task1\\Task1.0.1.csproj",</string>
+    <string>+      "packagesPath": "C:\\Users\\Georgia\\.nuget\\packages\\",</string>
+    <string>+      "outputPath": "C:\\Task1\\obj\\",</string>
+    <string>+      "projectStyle": "PackageReference",</string>
+    <string>+      "configFilePaths": [</string>
+    <string>+        "C:\\Users\\Georgia\\AppData\\Roaming\\NuGet\\NuGet.Config",</string>
+    <string>+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"</string>
+    <string>+      ],</string>
+    <string>+      "originalTargetFrameworks": [</string>
+    <string>+        "netcoreapp3.1"</string>
+    <string>+      ],</string>
+    <string>+      "sources": {</string>
+    <string>+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},</string>
+    <string>+        "https://api.nuget.org/v3/index.json": {}</string>
+    <string>+      },</string>
+    <string>+      "frameworks": {</string>
+    <string>+        "netcoreapp3.1": {</string>
+    <string>+          "targetAlias": "netcoreapp3.1",</string>
+    <string>+          "projectReferences": {}</string>
+    <string>+        }</string>
+    <string>+      },</string>
+    <string>+      "warningProperties": {</string>
+    <string>+        "warnAsError": [</string>
+    <string>+          "NU1605"</string>
+    <string>+        ]</string>
+    <string>+      }</string>
+    <string>+    },</string>
+    <string>+    "frameworks": {</string>
+    <string>+      "netcoreapp3.1": {</string>
+    <string>+        "targetAlias": "netcoreapp3.1",</string>
+    <string>+        "dependencies": {</string>
+    <string>+          "LibGit2Sharp": {</string>
+    <string>+            "target": "Package",</string>
+    <string>+            "version": "[0.26.2, )"</string>
+    <string>+          }</string>
+    <string>+        },</string>
+    <string>+        "imports": [</string>
+    <string>+          "net461",</string>
+    <string>+          "net462",</string>
+    <string>+          "net47",</string>
+    <string>+          "net471",</string>
+    <string>+          "net472",</string>
+    <string>+          "net48"</string>
+    <string>+        ],</string>
+    <string>+        "assetTargetFallback": true,</string>
+    <string>+        "warn": true,</string>
+    <string>+        "frameworkReferences": {</string>
+    <string>+          "Microsoft.NETCore.App": {</string>
+    <string>+            "privateAssets": "all"</string>
+    <string>+          }</string>
+    <string>+        },</string>
+    <string>+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"</string>
+    <string>+      }</string>
+    <string>+    }</string>
+    <string>+  }</string>
+    <string>+  "version": 2,</string>
+    <string>+  "dgSpecHash": "iAI8tOi1I/hmzwnrVWQPklbuqHZ/oSnYgWHM7uPfB20cabDpYg6oOpAnNrc7FsDFcuvYlgmZZu4Z3d4XMgBuPQ==",</string>
+    <string>+  "success": true,</string>
+    <string>+  "projectFilePath": "C:\\Task1\\Task1.0.1.csproj",</string>
+    <string>+  "expectedPackageFiles": [</string>
+    <string>+    "C:\\Users\\Georgia\\.nuget\\packages\\libgit2sharp\\0.26.2\\libgit2sharp.0.26.2.nupkg.sha512",</string>
+    <string>+    "C:\\Users\\Georgia\\.nuget\\packages\\libgit2sharp.nativebinaries\\2.0.306\\libgit2sharp.nativebinaries.2.0.306.nupkg.sha512"</string>
+    <string>+  ],</string>
+    <string>+  "logs": []</string>
+    <string>+        static string branchName;</string>
+    <string>+        public NewBranch(Repository repository, string aBranchName) </string>
+    <string>+            branchName = aBranchName;</string>
+    <string>+
++        public NewBranch(String aId, DateTime aDateTime, string aMessage, string anAuthor)</string>
+    <string>+        {</string>
+    <string>+            id = aId;</string>
+    <string>+            dateTime = aDateTime;</string>
+    <string>+            message = aMessage;</string>
+    <string>+            author = anAuthor;</string>
+    <string>+        }</string>
+    <string>+
+ </string>
+    <string>+               branchName = branch.FriendlyName;</string>
+    <string>+               Console.WriteLine(branchName);</string>
+    <string>+
+                var commits = branch.Commits;</string>
+    <string>+               int count = 0;</string>
+    <string>+                    BranchCommit.Add(commit);</string>
+    <string>+                    count++;</string>
+    <string>+                Console.WriteLine("BRANCH NAME: " + branchName + "\nCOMMIT NUMBER: " + count);</string>
+    <string>+
+                 foreach(var commit in BranchCommit)</string>
+    <string>+                    id = commit.Id.ToString().Substring(0, 7);</string>
+    <string>+                    Console.WriteLine(id + " " + dateTime + " " + message + " " + author);</string>
+    <string>+                BranchCommit.Clear();</string>
+    <string>+                </string>
+    <string>+        }                    </string>
+    <string>+
++            using (var repository = new Repository(root))</string>
+    <string>+            {</string>
+    <string>+                const string trackedBranchName = "origin/master";</string>
+    <string>+                var branch = repository.Branches[trackedBranchName];</string>
+    <string>+
++                Branch currentBranch = Commands.Checkout(repository, branch);</string>
+    <string>+                Repository.Init(@"C:\GitHub\git");</string>
+    <string>+                NewCommit commits = new NewCommit(repository);</string>
+    <string>+                commits.printCommitInfo();</string>
+    <string>+
++                NewBranch branches = new NewBranch(repository);</string>
+    <string>+                branches.printBranchInfo();</string>
+    <string>+            }</string>
+    <string>+
++            if (Directory.Exists(root))</string>
+    <string>+            {</string>
+    <string>+                Directory.Delete(root, true);</string>
+    <string>+                Repository.Clone("https://github.com/Skaratzas/NewTask1", root);</string>
+    <string>+            }</string>
+    <string>+            else</string>
+    <string>+                Repository.Clone("https://github.com/Skaratzas/NewTask1", root);</string>
+    <string>+
+            </string>
+    <string>+            Repository.Init(@"C:\GitHub\git");</string>
+    <string>+
+ </string>
+    <string>+           </string>
+    <string>+            string root = @"C:\GitHub\repository";</string>
+    <string>+            if (!Directory.Exists(root))</string>
+    <string>+            {</string>
+    <string>+                Repository.Clone("https://github.com/Skaratzas/NewTask1", @"C:\GitHub\repository");</string>
+    <string>+                Repository.Init(@"C:\GitHub\git");</string>
+    <string>+            }</string>
+    <string>+           </string>
+    <string>+                id = commit.Id.ToString().Substring(0, 7);</string>
+    <string>+                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);                                  </string>
+    <string>+
++</string>
+    <string>+
+     }</string>
+    <string>+          //  Repository.Clone("https://github.com/Skaratzas/NewTask1", @"C:\GitHub\repository");</string>
+    <string>+          //  Repository.Init(@"C:\GitHub\git");</string>
+    <string>+          </string>
+    <string>+    &lt;Compile Remove="Task1.cs" /&gt;</string>
+    <string>+  &lt;/ItemGroup&gt;</string>
+    <string>+
++  &lt;ItemGroup&gt;</string>
+    <string>+        Repository repository;</string>
+    <string>+        List&lt;Commit&gt; BranchCommit = new List&lt;Commit&gt;();</string>
+    <string>+
++        static String id;</string>
+    <string>+        static DateTime dateTime;</string>
+    <string>+        static string message;</string>
+    <string>+        static string author;</string>
+    <string>+  </string>
+    <string>+                Console.WriteLine(name);</string>
+    <string>+               var commits = branch.Commits;</string>
+    <string>+               foreach(var commit in commits)</string>
+    <string>+                {</string>
+    <string>+                    BranchCommit.Add(commit);                                                     </string>
+    <string>+                }</string>
+    <string>+                foreach(var commit in BranchCommit)</string>
+    <string>+                {</string>
+    <string>+                    id = commit.Id.ToString().Substring(0, 6);</string>
+    <string>+                    dateTime = commit.Author.When.LocalDateTime;</string>
+    <string>+                    message = commit.Message;</string>
+    <string>+                    author = commit.Author.Name;</string>
+    <string>+
++                    Console.WriteLine(id + " " + dateTime + " " + message + " " + name);</string>
+    <string>+                }</string>
+    <string>+            </string>
+    <string>+
++</string>
+    <string>+
+     }</string>
+    <string>+
++  &lt;PropertyGroup&gt;</string>
+    <string>+    &lt;OutputType&gt;Exe&lt;/OutputType&gt;</string>
+    <string>+    &lt;TargetFramework&gt;netcoreapp3.1&lt;/TargetFramework&gt;</string>
+    <string>+    &lt;RootNamespace&gt;Task1._0._1&lt;/RootNamespace&gt;</string>
+    <string>+  &lt;/PropertyGroup&gt;</string>
+    <string>+
++  &lt;ItemGroup&gt;</string>
+    <string>+    &lt;PackageReference Include="LibGit2Sharp" Version="0.26.2" /&gt;</string>
+    <string>+  &lt;/ItemGroup&gt;</string>
+    <string>+
++&lt;/Project&gt;</string>
+    <string>+	GlobalSection(SolutionConfigurationPlatforms) = preSolution</string>
+    <string>+		Debug|Any CPU = Debug|Any CPU</string>
+    <string>+		Release|Any CPU = Release|Any CPU</string>
+    <string>+	EndGlobalSection</string>
+    <string>+	GlobalSection(ProjectConfigurationPlatforms) = postSolution</string>
+    <string>+		{E99E548A-257B-4BD2-B5FC-AFDEA93720B4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU</string>
+    <string>+		{E99E548A-257B-4BD2-B5FC-AFDEA93720B4}.Debug|Any CPU.Build.0 = Debug|Any CPU</string>
+    <string>+		{E99E548A-257B-4BD2-B5FC-AFDEA93720B4}.Release|Any CPU.ActiveCfg = Release|Any CPU</string>
+    <string>+		{E99E548A-257B-4BD2-B5FC-AFDEA93720B4}.Release|Any CPU.Build.0 = Release|Any CPU</string>
+    <string>+	EndGlobalSection</string>
+    <string>+	GlobalSection(SolutionProperties) = preSolution</string>
+    <string>+		HideSolutionNode = FALSE</string>
+    <string>+	EndGlobalSection</string>
+    <string>+	GlobalSection(ExtensibilityGlobals) = postSolution</string>
+    <string>+		SolutionGuid = {EC5E2C89-A3C0-4C40-8E70-4ABD516B355F}</string>
+    <string>+	EndGlobalSection</string>
+    <string>+            branches.printBranchInfo();</string>
+    <string>+
++namespace Task1._0._1</string>
+    <string>+    class NewBranch </string>
+    <string>+    {</string>
+    <string>+        static string name;</string>
+    <string>+        Repository repository;        </string>
+    <string>+
++        public NewBranch(Repository repository)</string>
+    <string>+        {</string>
+    <string>+            this.repository = repository;</string>
+    <string>+        }</string>
+    <string>+
++        public NewBranch(Repository repository, string aName) </string>
+    <string>+        {</string>
+    <string>+            this.repository = repository;           </string>
+    <string>+            name = aName;</string>
+    <string>+        }</string>
+    <string>+   </string>
+    <string>+
++        public void printBranchInfo()</string>
+    <string>+        {            </string>
+    <string>+            var branches = repository.Branches;</string>
+    <string>+            Console.WriteLine("\nBranches: ");</string>
+    <string>+            foreach (var branch in branches)</string>
+    <string>+            {</string>
+    <string>+                name = branch.FriendlyName;</string>
+    <string>+                Console.WriteLine(name);                </string>
+    <string>+
++            }</string>
+    <string>+        }</string>
+    <string>+    }</string>
+    <string>+            commits.printCommitInfo();</string>
+    <string>+
++            NewBranch branches = new NewBranch(repository);</string>
+    <string>+
+ </string>
+    <string>+
++namespace Task1._0._1</string>
+    <string>+    class NewCommit</string>
+    <string>+    {</string>
+    <string>+        static String id;</string>
+    <string>+        static DateTime dateTime;</string>
+    <string>+        static string message;</string>
+    <string>+        static string name;</string>
+    <string>+        Repository repository;</string>
+    <string>+       </string>
+    <string>+
++        public NewCommit(String aId, DateTime aDateTime, string aMessage, string aName)</string>
+    <string>+        {</string>
+    <string>+            id = aId;</string>
+    <string>+            dateTime = aDateTime;</string>
+    <string>+            message = aMessage;</string>
+    <string>+            name = aName;</string>
+    <string>+        }</string>
+    <string>+
++        public NewCommit(Repository repository)</string>
+    <string>+        {</string>
+    <string>+            this.repository = repository;</string>
+    <string>+        }</string>
+    <string>+
++        </string>
+    <string>+        public void printCommitInfo() { </string>
+    <string>+
++            var commits = repository.Commits;</string>
+    <string>+            Console.WriteLine("Commits: ");</string>
+    <string>+            foreach (var commit in commits)</string>
+    <string>+            {</string>
+    <string>+                id = commit.Id.ToString().Substring(0, 6);</string>
+    <string>+                dateTime = commit.Author.When.LocalDateTime;</string>
+    <string>+                message = commit.Message;</string>
+    <string>+                name = commit.Author.Name;</string>
+    <string>+
++                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);</string>
+    <string>+                                  </string>
+    <string>+            }          </string>
+    <string>+        }</string>
+    <string>+    }</string>
+    <string>+            NewCommit commits = new NewCommit(repository);</string>
+    <string>+
+             </string>
+    <string>+            Repository repository = new Repository(@"C:\GitHub\repository");</string>
+    <string>+
++            </string>
+    <string>+
+ </string>
+    <string>+           </string>
+    <string>+
++namespace Task1._0._0</string>
+    <string>+    class Program</string>
+    <string>+    {</string>
+    <string>+        static void Main(string[] args)</string>
+    <string>+        {</string>
+    <string>+
++            Repository.Clone("https://github.com/Skaratzas/repository", @"C:\GitHub\repository");</string>
+    <string>+
++            Repository.Init(@"C:\GitHub\git");</string>
+    <string>+
++</string>
+    <string>+            using (var repository = new Repository(@"C:\GitHub\repository")) {</string>
+    <string>+                var commits = repository.Commits;</string>
+    <string>+                foreach (var commit in commits)</string>
+    <string>+                {</string>
+    <string>+                    Console.WriteLine($"{commit.Id.ToString().Substring(0, 6)} " +</string>
+    <string>+                                      $"{commit.Author.When.ToLocalTime()} " +</string>
+    <string>+                                      $"{commit.MessageShort} " +</string>
+    <string>+                                      $"{commit.Author.Name}");</string>
+    <string>+                }</string>
+    <string>+
++            }</string>
+    <string>+        }</string>
+    <string>+    }</string>
+  </addedLines>
+  <removedLines>
+    <string>-
++using System.Collections.Generic;</string>
+    <string>-        static String id;</string>
+    <string>-        Repository repository;</string>
+    <string>-
++        Repository repository;        </string>
+    <string>-        public NewCommit(String aId, DateTime aDateTime, string aMessage, string aName)</string>
+    <string>-                    var patch = repository.Diff.Compare&lt;Patch&gt;(previousCommit.Tree, commit.Tree);</string>
+    <string>-                    {</string>
+    <string>-                    }</string>
+    <string>-            }</string>
+    <string>-      /*          do</string>
+    <string>-
+-*/</string>
+    <string>-                Console.WriteLine("Choose a branch: ");</string>
+    <string>-                String chosenBranch = Console.ReadLine();</string>
+    <string>-
+-                branch = repository.Branches[chosenBranch];</string>
+    <string>-                Branch currentBranch = Commands.Checkout(repository, branch);</string>
+    <string>-                string chosenBranch = Console.ReadLine();</string>
+    <string>-             </string>
+    <string>-                var branch = repository.Branches[chosenBranch];</string>
+    <string>-                Branch currentBranch = Commands.Checkout(repository, branch);</string>
+    <string>-       </string>
+    <string>-        </string>
+    <string>-        public void printCommitInfo() { </string>
+    <string>-                    var options = new CompareOptions { Similarity = true ? SimilarityOptions.Renames : SimilarityOptions.None };</string>
+    <string>-                    var test = repository.Diff.Compare&lt;TreeChanges&gt;(commit.Tree, previousCommit.Tree, options);</string>
+    <string>-                  </string>
+    <string>-                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);</string>
+    <string>-
+-</string>
+    <string>-
+     }</string>
+    <string>-                const string trackedBranchName = "origin/master";</string>
+    <string>-                var branch = repository.Branches[trackedBranchName];</string>
+    <string>-    {</string>
+    <string>-                //TODO ... pull</string>
+    <string>-                //commits.commitChanges(repository);</string>
+    <string>-                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);                                  </string>
+    <string>-            }          </string>
+    <string>-        }</string>
+    <string>-        public Task&lt;TreeChanges&gt; Compare(IRepository repository, string sha1, string sha2, bool detectRenames)</string>
+    <string>-        {</string>
+    <string>-
+-            Guard.ArgumentNotNull(repository, nameof(repository)); </string>
+    <string>-            Guard.ArgumentNotEmptyString(sha1, nameof(sha1)); </string>
+    <string>-            Guard.ArgumentNotEmptyString(sha2, nameof(sha2)); </string>
+    <string>-            return Task.Factory.StartNew(() =&gt; </string>
+    <string>-            {</string>
+    <string>-            var options = new CompareOptions { Similarity = detectRenames ? SimilarityOptions.Renames : SimilarityOptions.None };</string>
+    <string>-            var commit1 = repository.Lookup&lt;Commit&gt;(sha1); </string>
+    <string>-            var commit2 = repository.Lookup&lt;Commit&gt;(sha2);</string>
+    <string>-            if (commit1 != null &amp;&amp; commit2 != null)</string>
+    <string>-                {</string>
+    <string>-                    return repository.Diff.Compare&lt;TreeChanges&gt;(commit1.Tree, commit2.Tree, options);</string>
+    <string>-               }</string>
+    <string>-            else</string>
+    <string>-                {</string>
+    <string>-                    return null;</string>
+    <string>-                }</string>
+    <string>-               });</string>
+    <string>-            if (Directory.Exists(root))</string>
+    <string>-                Directory.Delete(root, true);              </string>
+    <string>-
+-</string>
+    <string>-            Repository.Clone("https://github.com/Skaratzas/NewTask1", root);</string>
+    <string>-
+ </string>
+    <string>-                commits.commitChanges(repository);</string>
+    <string>-    &lt;TargetFramework&gt;netcoreapp3.1&lt;/TargetFramework&gt;</string>
+    <string>-    "C:\\Task1\\Task1.0.1.csproj": {}</string>
+    <string>-    "C:\\Task1\\Task1.0.1.csproj": {</string>
+    <string>-        "projectUniqueName": "C:\\Task1\\Task1.0.1.csproj",</string>
+    <string>-        "projectPath": "C:\\Task1\\Task1.0.1.csproj",</string>
+    <string>-        "packagesPath": "C:\\Users\\Georgia\\.nuget\\packages\\",</string>
+    <string>-        "outputPath": "C:\\Task1\\obj\\",</string>
+    <string>-          "C:\\Users\\Georgia\\AppData\\Roaming\\NuGet\\NuGet.Config",</string>
+    <string>-          "netcoreapp3.1"</string>
+    <string>-          "netcoreapp3.1": {</string>
+    <string>-            "targetAlias": "netcoreapp3.1",</string>
+    <string>-        "netcoreapp3.1": {</string>
+    <string>-          "targetAlias": "netcoreapp3.1",</string>
+    <string>-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"</string>
+    <string>-    &lt;NuGetPackageFolders Condition=" '$(NuGetPackageFolders)' == '' "&gt;C:\Users\Georgia\.nuget\packages\&lt;/NuGetPackageFolders&gt;</string>
+    <string>-    &lt;NuGetToolVersion Condition=" '$(NuGetToolVersion)' == '' "&gt;5.8.0&lt;/NuGetToolVersion&gt;</string>
+    <string>-  &lt;ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' "&gt;</string>
+    <string>-    &lt;SourceRoot Include="$([MSBuild]::EnsureTrailingSlash($(NuGetPackageFolders)))" /&gt;</string>
+    <string>-  &lt;/ItemGroup&gt;</string>
+    <string>-    ".NETCoreApp,Version=v3.1": {</string>
+    <string>-    ".NETCoreApp,Version=v3.1": [</string>
+    <string>-    "C:\\Users\\Georgia\\.nuget\\packages\\": {}</string>
+    <string>-      "projectUniqueName": "C:\\Task1\\Task1.0.1.csproj",</string>
+    <string>-      "projectPath": "C:\\Task1\\Task1.0.1.csproj",</string>
+    <string>-      "packagesPath": "C:\\Users\\Georgia\\.nuget\\packages\\",</string>
+    <string>-      "outputPath": "C:\\Task1\\obj\\",</string>
+    <string>-        "C:\\Users\\Georgia\\AppData\\Roaming\\NuGet\\NuGet.Config",</string>
+    <string>-        "netcoreapp3.1"</string>
+    <string>-        "netcoreapp3.1": {</string>
+    <string>-          "targetAlias": "netcoreapp3.1",</string>
+    <string>-      "netcoreapp3.1": {</string>
+    <string>-        "targetAlias": "netcoreapp3.1",</string>
+    <string>-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.102\\RuntimeIdentifierGraph.json"</string>
+    <string>-
+-</string>
+    <string>-
+-</string>
+    <string>-
+-</string>
+    <string>-
+     }</string>
+    <string>-
+-</string>
+    <string>-                Directory.Delete(root, true);</string>
+    <string>-                Repository.Clone("https://github.com/Skaratzas/NewTask1", root);</string>
+    <string>-            }</string>
+    <string>-            else</string>
+    <string>-            {</string>
+    <string>-                Repository.Clone("https://github.com/Skaratzas/NewTask1", root);</string>
+    <string>-        static string name;</string>
+    <string>-        public NewBranch(Repository repository, string aName) </string>
+    <string>-            name = aName;</string>
+    <string>-   </string>
+    <string>-                name = branch.FriendlyName;</string>
+    <string>-                Console.WriteLine(name);</string>
+    <string>-                    BranchCommit.Add(commit);                                                     </string>
+    <string>-                    id = commit.Id.ToString().Substring(0, 6);</string>
+    <string>-                    Console.WriteLine(id + " " + dateTime + " " + message + " " + name);</string>
+    <string>-
+-</string>
+    <string>-
++                </string>
+    <string>-        }</string>
+    <string>-
++        }                    </string>
+    <string>-           </string>
+    <string>-            Repository.Init(@"C:\GitHub\git");</string>
+    <string>-            Repository repository = new Repository(@"C:\GitHub\repository");</string>
+    <string>-            NewCommit commits = new NewCommit(repository);</string>
+    <string>-            commits.printCommitInfo();</string>
+    <string>-            NewBranch branches = new NewBranch(repository);</string>
+    <string>-            branches.printBranchInfo();</string>
+    <string>-           </string>
+    <string>-            if (!Directory.Exists(root))</string>
+    <string>-                Repository.Clone("https://github.com/Skaratzas/NewTask1", @"C:\GitHub\repository");</string>
+    <string>-                Repository.Init(@"C:\GitHub\git");</string>
+    <string>-          </string>
+    <string>-          //  Repository.Clone("https://github.com/Skaratzas/NewTask1", @"C:\GitHub\repository");</string>
+    <string>-          //  Repository.Init(@"C:\GitHub\git");</string>
+    <string>-                id = commit.Id.ToString().Substring(0, 6);</string>
+    <string>-                Console.WriteLine(id + " " + dateTime + " " + message + " " + name);</string>
+    <string>-                                  </string>
+    <string>-            Repository.Clone("https://github.com/Skaratzas/repository", @"C:\GitHub\repository");</string>
+    <string>-            Repository.Init(@"C:\GitHub\git");</string>
+    <string>-
+-</string>
+    <string>-
+-</string>
+    <string>-
+-           </string>
+    <string>-        Repository repository;        </string>
+    <string>-                Console.WriteLine(name);                </string>
+    <string>-            </string>
+    <string>-
+             Repository.Init(@"C:\GitHub\git");</string>
+    <string>-            using (var repository = new Repository(@"C:\GitHub\repository")) {</string>
+    <string>-                var commits = repository.Commits;</string>
+    <string>-                foreach (var commit in commits)</string>
+    <string>-                {</string>
+    <string>-                    Console.WriteLine($"{commit.Id.ToString().Substring(0, 6)} " +</string>
+    <string>-                                      $"{commit.Author.When.ToLocalTime()} " +</string>
+    <string>-                                      $"{commit.MessageShort} " +</string>
+    <string>-                                      $"{commit.Author.Name}");</string>
+    <string>-                }</string>
+    <string>-            }</string>
+  </removedLines>
+  <id>9bd5e6d</id>
+  <dateTime>2021-01-13T13:03:46+01:00</dateTime>
+  <message>Added file Task1
+</message>
+  <name>Stavros</name>
+</NewCommit>

@@ -1,7 +1,7 @@
 using LibGit2Sharp;
 using System;
 using System.IO;
-
+using System.Xml.Serialization;
 
 namespace Task1._0._1
 {
@@ -51,7 +51,20 @@ namespace Task1._0._1
 
                 NewBranch branches = new NewBranch(repository);
                 branches.printBranchInfo();
+
+                Serialize(commits);
+             //   Serialize(branches);
             }
+
+            static void Serialize(NewCommit commits)
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(NewCommit));
+                using (TextWriter writer = new StreamWriter(@"C:\Task1\data.xml"))
+                {
+                    serializer.Serialize(writer, commits);
+                }
+            }
+            
         }
 
 

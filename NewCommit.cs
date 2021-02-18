@@ -5,15 +5,15 @@ using System.Text.RegularExpressions;
 
 namespace Task1._0._1
 {
-    class NewCommit
+    public class NewCommit
     {
-        static string id;
-        static DateTime dateTime;
-        static string message;
-        static string name;
-        Repository repository;        
-        List<string> addedLines = new List<string>();
-        List<string> removedLines = new List<string>();
+        public string id { get; set; }
+        public DateTime dateTime { get; set; }
+        public string message { get; set; }
+        public string name { get; set; }
+        Repository repository { get; set; }
+        public List<string> addedLines = new List<string>();
+        public List<string> removedLines = new List<string>();
 
         public NewCommit(string aId, DateTime aDateTime, string aMessage, string aName)
         {
@@ -27,6 +27,8 @@ namespace Task1._0._1
         {
             this.repository = repository;
         }
+
+        public NewCommit() : this (null) { }
 
 
         public void printCommitInfo()
@@ -76,7 +78,7 @@ namespace Task1._0._1
 
 
                 previousCommit = commit;
-            }         
+            }
 
         }
     }
