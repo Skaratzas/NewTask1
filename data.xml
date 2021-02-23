@@ -1278,4 +1278,12 @@
   <message>Added file Task1
 </message>
   <name>Stavros</name>
-</NewCommit>
+</NewCommit><?xml version="1.0" encoding="utf-8"?>
+<NewBranch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <branchName>origin/test</branchName>
+  <id>9bd5e6d</id>
+  <dateTime>2021-01-13T13:03:46+01:00</dateTime>
+  <message>Added file Task1
+</message>
+  <author>Stavros</author>
+</NewBranch>

@@ -52,18 +52,23 @@ namespace Task1._0._1
                 NewBranch branches = new NewBranch(repository);
                 branches.printBranchInfo();
 
-                Serialize(commits);
-             //   Serialize(branches);
+                Serialize(commits, branches);
+                
             }
 
-            static void Serialize(NewCommit commits)
+            static void Serialize(NewCommit commits, NewBranch branches)
             {
-                XmlSerializer serializer = new XmlSerializer(typeof(NewCommit));
+                XmlSerializer serializerCommit = new XmlSerializer(typeof(NewCommit));
+                XmlSerializer serializerBranch = new XmlSerializer(typeof(NewBranch));
+
                 using (TextWriter writer = new StreamWriter(@"C:\Task1\data.xml"))
                 {
-                    serializer.Serialize(writer, commits);
+                    serializerCommit.Serialize(writer, commits);
+                    serializerBranch.Serialize(writer, branches);
                 }
             }
+
+           
             
         }
 

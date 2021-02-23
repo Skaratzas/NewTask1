@@ -5,16 +5,16 @@ using System.IO;
 
 namespace Task1._0._1
 {
-    class NewBranch 
+    public class NewBranch 
     {
-        static string branchName;
+        public string branchName { get; set; }
         Repository repository;
         List<Commit> BranchCommit = new List<Commit>();
 
-        static String id;
-        static DateTime dateTime;
-        static string message;
-        static string author;
+        public String id { get; set; }
+        public DateTime dateTime { get; set; }
+        public string message { get; set; }
+        public string author { get; set; }
   
 
         public NewBranch(Repository repository)
@@ -35,6 +35,8 @@ namespace Task1._0._1
             message = aMessage;
             author = anAuthor;
         }
+
+        public NewBranch() : this(null) { }
 
 
         public void printBranchInfo()
