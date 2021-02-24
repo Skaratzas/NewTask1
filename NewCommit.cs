@@ -14,7 +14,8 @@ namespace Task1._0._1
         Repository repository { get; set; }
         public List<string> addedLines = new List<string>();
         public List<string> removedLines = new List<string>();
-        string[] klasse = { "Program.cs", "NewCommit.cs", "NewBranch.cs" };
+        List<string> klasse = new List<string>();
+        
         
         
         public NewCommit(string aId, DateTime aDateTime, string aMessage, string aName)
@@ -54,24 +55,26 @@ namespace Task1._0._1
                             pec.LinesDeleted);
 
 
-                        Console.WriteLine();
-                        if (pec.Patch.Contains("Program.cs"))
-                        {
-                            Console.WriteLine("The changes were made in class: " + klasse[0] + "\n");
-                        }
-                        if (pec.Patch.Contains("NewCommit.cs")) 
-                        {
-                            Console.WriteLine("The changes were made in class: " + klasse[1] + "\n");
-                        }
-                        if(pec.Patch.Contains("NewBranch.cs"))
-                        {
-                            Console.WriteLine("The changes were made in class: " + klasse[2] + "\n");                            
-                        }
-                         
-
-
-
+                        
+                                             
                         string input = pec.Patch;
+
+                        
+                        string klassPatern = @"^diff.*\.cs$";
+                        foreach (Match match in Regex.Matches(input, klassPatern, RegexOptions.Multiline))
+                        {
+                            klasse.Add(match.Value);
+                        }
+
+                        Console.Write("\nCommit: " + commit.Message + " make changes in class: ");
+                        foreach (string aKlasse in klasse)
+                        {
+                            Console.WriteLine(aKlasse);
+                            
+                        }
+                        klasse.Clear();
+                       
+
 
                         string addedPattern = @"^\+\s.*$";
                         foreach (Match match in Regex.Matches(input, addedPattern, RegexOptions.Multiline))
@@ -83,9 +86,9 @@ namespace Task1._0._1
                         foreach (Match match in Regex.Matches(input, removedPattern, RegexOptions.Multiline))
                         {
                             removedLines.Add(match.Value);
-                        }
-                         
-                      
+                        }                           
+
+
                     }                   
                 }
 
@@ -100,6 +103,11 @@ namespace Task1._0._1
                 previousCommit = commit;
             }
 
+            
+
         }
+
+
+
     }
 }
