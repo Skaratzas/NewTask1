@@ -53,9 +53,7 @@ namespace Task1._0._1
                             pec.LinesAdded + pec.LinesDeleted,
                             pec.LinesAdded,
                             pec.LinesDeleted);
-
-
-                        
+                     
                                              
                         string input = pec.Patch;
 
@@ -66,16 +64,8 @@ namespace Task1._0._1
                             klasse.Add(match.Value);
                         }
 
-                        Console.Write("\nCommit: " + commit.Message + " make changes in class: ");
-                        foreach (string aKlasse in klasse)
-                        {
-                            Console.WriteLine(aKlasse);
-                            
-                        }
-                        klasse.Clear();
+                                             
                        
-
-
                         string addedPattern = @"^\+\s.*$";
                         foreach (Match match in Regex.Matches(input, addedPattern, RegexOptions.Multiline))
                         {
@@ -89,7 +79,15 @@ namespace Task1._0._1
                         }                           
 
 
-                    }                   
+                    }
+
+                    Console.Write("\nCommit: " + previousCommit.Message + " make changes in class: ");
+                    foreach (string aKlasse in klasse)
+                    {
+                        Console.WriteLine(aKlasse);
+
+                    }
+                    klasse.Clear();
                 }
 
                 id = commit.Id.ToString().Substring(0, 7);
@@ -101,12 +99,9 @@ namespace Task1._0._1
 
 
                 previousCommit = commit;
-            }
-
-            
+            }            
 
         }
-
 
 
     }
