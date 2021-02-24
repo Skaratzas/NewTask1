@@ -14,7 +14,9 @@ namespace Task1._0._1
         Repository repository { get; set; }
         public List<string> addedLines = new List<string>();
         public List<string> removedLines = new List<string>();
-
+        string[] klasse = { "Program.cs", "NewCommit.cs", "NewBranch.cs" };
+        
+        
         public NewCommit(string aId, DateTime aDateTime, string aMessage, string aName)
         {
             id = aId;
@@ -44,12 +46,29 @@ namespace Task1._0._1
                     var patch = repository.Diff.Compare<Patch>(commit.Tree, previousCommit.Tree);
 
                     foreach (var pec in patch)
-                    {                     
+                    {
                         Console.WriteLine("{0} Lines changed: {1} = ({2}+ and {3}-)",
                             pec.Patch,
                             pec.LinesAdded + pec.LinesDeleted,
                             pec.LinesAdded,
                             pec.LinesDeleted);
+
+
+                        Console.WriteLine();
+                        if (pec.Patch.Contains("Program.cs"))
+                        {
+                            Console.WriteLine("The changes were made in class: " + klasse[0] + "\n");
+                        }
+                        if (pec.Patch.Contains("NewCommit.cs")) 
+                        {
+                            Console.WriteLine("The changes were made in class: " + klasse[1] + "\n");
+                        }
+                        if(pec.Patch.Contains("NewBranch.cs"))
+                        {
+                            Console.WriteLine("The changes were made in class: " + klasse[2] + "\n");                            
+                        }
+                         
+
 
 
                         string input = pec.Patch;
@@ -65,6 +84,7 @@ namespace Task1._0._1
                         {
                             removedLines.Add(match.Value);
                         }
+                         
                       
                     }                   
                 }
@@ -74,7 +94,7 @@ namespace Task1._0._1
                 message = commit.Message;
                 name = commit.Author.Name;
 
-                Console.WriteLine("\n" + id + " " + dateTime + " " + message + " " + name);
+                Console.WriteLine("\n" + id + " " + dateTime + " " + message + " " + name);                           
 
 
                 previousCommit = commit;
