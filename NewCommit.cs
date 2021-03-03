@@ -1,6 +1,7 @@
 using LibGit2Sharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Task1._0._1
@@ -15,7 +16,7 @@ namespace Task1._0._1
         public List<string> addedLines = new List<string>();
         public List<string> removedLines = new List<string>();
         List<string> klasse = new List<string>();
-        
+        List<string> addedLinesPerCommit = new List<string>();
         
         
         public NewCommit(string aId, DateTime aDateTime, string aMessage, string aName)
@@ -36,15 +37,18 @@ namespace Task1._0._1
 
         public void printCommitInfo()
         {
-
+            
             var commits = repository.Commits;
             Console.WriteLine("Commits: ");
             Commit previousCommit = null;
             foreach (var commit in commits)
             {
+
                 if (previousCommit != null)
                 {
                     var patch = repository.Diff.Compare<Patch>(commit.Tree, previousCommit.Tree);
+                    var patch2 = patch.Content;
+                                      
 
                     foreach (var pec in patch)
                     {
@@ -56,20 +60,13 @@ namespace Task1._0._1
                      
                                              
                         string input = pec.Patch;
-
-                        
-                        string klassPatern = @"^diff.*\.cs$";
-                        foreach (Match match in Regex.Matches(input, klassPatern, RegexOptions.Multiline))
-                        {
-                            klasse.Add(match.Value);
-                        }
-
-                                             
+                                                                                          
                        
                         string addedPattern = @"^\+\s.*$";
                         foreach (Match match in Regex.Matches(input, addedPattern, RegexOptions.Multiline))
                         {
                             addedLines.Add(match.Value);
+                            addedLinesPerCommit.Add(match.Value);
                         }
 
                         string removedPattern = @"^\-\s.*$";
@@ -81,13 +78,51 @@ namespace Task1._0._1
 
                     }
 
-                    Console.Write("\nCommit: " + previousCommit.Message + " make changes in class: ");
-                    foreach (string aKlasse in klasse)
+                    
+                    
+                    string klassPattern = @"(class)\s.*";
+
+                    string text = System.IO.File.ReadAllText(@"C:\GitHub\repository\Program.cs");  
+                    if (text.Contains(Convert.ToString(addedLinesPerCommit)))
                     {
-                        Console.WriteLine(aKlasse);
+                        foreach (Match match in Regex.Matches(text, klassPattern, RegexOptions.Multiline))
+                        {
+                            klasse.Add(match.Value);
+                        }
+                    }
+                                                                               
+
+                    string text2 = System.IO.File.ReadAllText(@"C:\GitHub\repository\NewCommit.cs");
+                    if (text2.Contains(Convert.ToString(addedLinesPerCommit)))
+                    {
+                        foreach (Match match in Regex.Matches(text2, klassPattern, RegexOptions.Multiline))
+                        {
+                            klasse.Add(match.Value);
+                        }
+                    }
+
+
+                    string text3 = System.IO.File.ReadAllText(@"C:\GitHub\repository\NewBranch.cs");
+                    if (text3.Contains(Convert.ToString(addedLinesPerCommit)))
+                    {
+                        
+                        foreach (Match match in Regex.Matches(text3, klassPattern, RegexOptions.Multiline))
+                        {
+                            klasse.Add(match.Value);
+                        }
 
                     }
+
+                    Console.WriteLine("Commit: " + id + " make changes in class: ");
+                    foreach(string aKlasse in klasse)
+                    {
+                        Console.WriteLine(aKlasse);
+                    }
+
+                    addedLinesPerCommit.Clear();
                     klasse.Clear();
+
+
                 }
 
                 id = commit.Id.ToString().Substring(0, 7);
@@ -99,10 +134,10 @@ namespace Task1._0._1
 
 
                 previousCommit = commit;
-            }            
 
-        }
+             }
 
+        }      
 
     }
 }
