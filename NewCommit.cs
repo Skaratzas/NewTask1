@@ -66,15 +66,23 @@ namespace Task1._0._1
                         foreach (Match match in Regex.Matches(input, addedPattern, RegexOptions.Multiline))
                         {
                             addedLines.Add(match.Value);
-                            addedLinesPerCommit.Add(match.Value);
+                //            addedLinesPerCommit.Add(match.Value);
                         }
 
                         string removedPattern = @"^\-\s.*$";
                         foreach (Match match in Regex.Matches(input, removedPattern, RegexOptions.Multiline))
                         {
                             removedLines.Add(match.Value);
-                        }                           
+                        }
 
+                        string newPattern = @"(?<=^\+)\s.*$";
+                        foreach (Match match in Regex.Matches(input, newPattern, RegexOptions.Multiline))
+                       {
+                        
+                            addedLinesPerCommit.Add(match.Value);
+                            
+                        }
+                 
 
                     }
 
@@ -82,7 +90,7 @@ namespace Task1._0._1
                     
                     string klassPattern = @"(class)\s.*";
 
-                    string text = System.IO.File.ReadAllText(@"C:\GitHub\repository\Program.cs");  
+    /*                string text = System.IO.File.ReadAllText(@"C:\GitHub\repository\Program.cs");  
                     if (text.Contains(Convert.ToString(addedLinesPerCommit)))
                     {
                         foreach (Match match in Regex.Matches(text, klassPattern, RegexOptions.Multiline))
@@ -112,8 +120,24 @@ namespace Task1._0._1
                         }
 
                     }
+    */
 
-                    Console.WriteLine("Commit: " + id + " make changes in class: ");
+                    string[] Files = System.IO.Directory.GetFiles(@"C:\GitHub\repository", "*.cs");
+                    foreach (string file in Files)
+                    {
+                        string text = System.IO.File.ReadAllText(file);
+                        if (text.Contains(Convert.ToString(addedLinesPerCommit)))
+                        {
+                            foreach (Match match in Regex.Matches(text, klassPattern, RegexOptions.Multiline))
+                            {
+                                klasse.Add(match.Value);
+                            }
+                        }                                                                                                 
+                        
+                    }
+
+
+                    Console.WriteLine("\nCommit: " + id + " make changes in class: ");
                     foreach(string aKlasse in klasse)
                     {
                         Console.WriteLine(aKlasse);
