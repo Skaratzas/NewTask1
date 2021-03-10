@@ -1,12 +1,13 @@
 using LibGit2Sharp;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Xml.Serialization;
 
 namespace Task1._0._1
 {
     class Program
-    {     
+    {
         static void Main(string[] args)
         {
 
@@ -48,7 +49,6 @@ namespace Task1._0._1
                 NewCommit commits = new NewCommit(repository);
                 commits.printCommitInfo();
                 
-
                 NewBranch branches = new NewBranch(repository);
                 branches.printBranchInfo();
 
@@ -61,14 +61,16 @@ namespace Task1._0._1
                 XmlSerializer serializerCommit = new XmlSerializer(typeof(NewCommit));
                 XmlSerializer serializerBranch = new XmlSerializer(typeof(NewBranch));
 
-                using (TextWriter writer = new StreamWriter(@"C:\Task1\data.xml"))
+                var outPutDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().CodeBase);
+                var relativePath = Path.Combine(outPutDirectory, "data.xml");
+                string relative_path = new Uri(relativePath).LocalPath;
+
+                using (TextWriter writer = new StreamWriter(relative_path))
                 {
                     serializerCommit.Serialize(writer, commits);
                     serializerBranch.Serialize(writer, branches);
                 }
-            }
-
-           
+            }          
             
         }
 
