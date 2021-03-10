@@ -17,6 +17,7 @@ namespace Task1._0._1
         public List<string> removedLines = new List<string>();
         List<string> klasse = new List<string>();
         List<string> addedLinesPerCommit = new List<string>();
+        List<string> methods = new List<string>();
         
         
         public NewCommit(string aId, DateTime aDateTime, string aMessage, string aName)
@@ -82,13 +83,12 @@ namespace Task1._0._1
                             addedLinesPerCommit.Add(match.Value);
                             
                         }
-                 
-
+                       
                     }
 
                     
                     
-                    string klassPattern = @"(class)\s.*";
+    //                string klassPattern = @"(class)\s.*";
 
     /*                string text = System.IO.File.ReadAllText(@"C:\GitHub\repository\Program.cs");  
                     if (text.Contains(Convert.ToString(addedLinesPerCommit)))
@@ -98,55 +98,55 @@ namespace Task1._0._1
                             klasse.Add(match.Value);
                         }
                     }
-                                                                               
-
-                    string text2 = System.IO.File.ReadAllText(@"C:\GitHub\repository\NewCommit.cs");
-                    if (text2.Contains(Convert.ToString(addedLinesPerCommit)))
-                    {
-                        foreach (Match match in Regex.Matches(text2, klassPattern, RegexOptions.Multiline))
-                        {
-                            klasse.Add(match.Value);
-                        }
-                    }
-
-
-                    string text3 = System.IO.File.ReadAllText(@"C:\GitHub\repository\NewBranch.cs");
-                    if (text3.Contains(Convert.ToString(addedLinesPerCommit)))
-                    {
-                        
-                        foreach (Match match in Regex.Matches(text3, klassPattern, RegexOptions.Multiline))
-                        {
-                            klasse.Add(match.Value);
-                        }
-
-                    }
+                                                                                                 
     */
 
                     string[] Files = System.IO.Directory.GetFiles(@"C:\GitHub\repository", "*.cs");
+
+                    Console.WriteLine("Commit: " + id + " make changes in ");
                     foreach (string file in Files)
                     {
-                        string text = System.IO.File.ReadAllText(file);
-                        if (text.Contains(Convert.ToString(addedLinesPerCommit)))
+                        string [] text = System.IO.File.ReadAllLines(file);
+                        bool matches = addedLinesPerCommit.All(text.Contains);
+                        if (matches)
                         {
-                            foreach (Match match in Regex.Matches(text, klassPattern, RegexOptions.Multiline))
+                            var NameMethods = GetMethodsName(file);
+                            var NameClass = GetClassName(file);
+
+                            
+                            foreach (var klass in NameClass)
                             {
-                                klasse.Add(match.Value);
+                                Console.WriteLine("classes: " + klass);
                             }
-                        }                                                                                                 
-                        
+                            foreach (var method in NameMethods)
+                            {
+                                Console.WriteLine("methods: " + method);
+                            }
+
+                        }
+                              
+                                     
+                            
+
+
+                             //     int x = text.CompareTo(Convert.ToString(addedLinesPerCommit));                        
+                      /*       if (text.Contains(Convert.ToString(addedLinesPerCommit)))
+                             {
+                               
+                            var NameMethods = GetMethodsName(file);
+                            var NameClass = GetClassName(file);
+                            foreach (var method in NameMethods)
+                            {
+                                Console.WriteLine("METHODS: " + method);
+                            }
+                            foreach (var klass in NameClass)
+                            {
+                                Console.WriteLine("CLASSES: " + klass);
+                            }
+                        }
+                      */
                     }
-
-
-                    Console.WriteLine("\nCommit: " + id + " make changes in class: ");
-                    foreach(string aKlasse in klasse)
-                    {
-                        Console.WriteLine(aKlasse);
-                    }
-
-                    addedLinesPerCommit.Clear();
-                    klasse.Clear();
-
-
+                                                                                                                      
                 }
 
                 id = commit.Id.ToString().Substring(0, 7);
@@ -160,8 +160,52 @@ namespace Task1._0._1
                 previousCommit = commit;
 
              }
+           
+        }
 
-        }      
+       
+
+        public List<string> GetMethodsName(string FileName)
+        {
+            List<string> methods = new List<string>();
+            var MethodLines = System.IO.File.ReadAllLines(FileName).Where((a => (a.Contains("protected") ||
+                                            a.Contains("private") ||
+                                            a.Contains("public")) &&
+                                            !a.Contains("class")));
+
+            foreach (var item in MethodLines)
+            {
+                if (item.IndexOf("(") != -1)
+                {
+                    string temp = string.Join("", item.Substring(0, item.IndexOf("(")).Reverse());
+                    methods.Add(string.Join("", temp.Substring(0, temp.IndexOf(" ")).Reverse()));
+                }
+            }
+            return methods.Distinct().ToList();
+        }
+
+
+
+        public List<string> GetClassName(string FileName)
+        {
+            List<string> classes = new List<string>();
+            var ClassLines = System.IO.File.ReadAllLines(FileName).Where((a => ((a.Contains("private") ||
+                                            a.Contains("public") ||
+                                            a.Contains("static")) &&
+                                            a.Contains("class"))||a.Contains("class")));
+
+
+            foreach (var item in ClassLines)
+            {
+                if (item.IndexOf("{") != -1)
+                {
+                    string temp = string.Join("", item.Substring(0, item.IndexOf("{")).Reverse());
+                    classes.Add(string.Join("", temp.Substring(0, temp.IndexOf(" ")).Reverse()));
+                }
+            }
+            return classes.Distinct().ToList();
+        }
+
 
     }
 }
