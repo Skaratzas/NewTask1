@@ -44,7 +44,7 @@ namespace Task1._0._1
             Commit previousCommit = null;
             foreach (var commit in commits)
             {
-
+                
                 if (previousCommit != null)
                 {
                     var patch = repository.Diff.Compare<Patch>(commit.Tree, previousCommit.Tree);
@@ -67,7 +67,6 @@ namespace Task1._0._1
                         foreach (Match match in Regex.Matches(input, addedPattern, RegexOptions.Multiline))
                         {
                             addedLines.Add(match.Value);
-                //            addedLinesPerCommit.Add(match.Value);
                         }
 
                         string removedPattern = @"^\-\s.*$";
@@ -76,19 +75,17 @@ namespace Task1._0._1
                             removedLines.Add(match.Value);
                         }
 
+
                         string newPattern = @"(?<=^\+)\s.*$";
                         foreach (Match match in Regex.Matches(input, newPattern, RegexOptions.Multiline))
-                       {
-                        
-                            addedLinesPerCommit.Add(match.Value);
-                            
+                        {                      
+                            addedLinesPerCommit.Add(match.Value);                                                      
                         }
-                       
+                        
                     }
 
                     
                     
-    //                string klassPattern = @"(class)\s.*";
 
     /*                string text = System.IO.File.ReadAllText(@"C:\GitHub\repository\Program.cs");  
                     if (text.Contains(Convert.ToString(addedLinesPerCommit)))
@@ -101,61 +98,66 @@ namespace Task1._0._1
                                                                                                  
     */
 
-                    string[] Files = System.IO.Directory.GetFiles(@"C:\GitHub\repository", "*.cs");
+                    
+                    
 
-                    Console.WriteLine("Commit: " + id + " make changes in ");
+                    string[] Files = System.IO.Directory.GetFiles(@"C:\GitHub\repository", "*.cs");
+                   
                     foreach (string file in Files)
                     {
-                        string [] text = System.IO.File.ReadAllLines(file);
-                        bool matches = addedLinesPerCommit.All(text.Contains);
-                        if (matches)
+
+                        var checkoutPaths = new[] { file };
+                        CheckoutOptions options = new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force };
+                        repository.CheckoutPaths(previousCommit.Sha, checkoutPaths, options);
+
+
+
+
+
+                        string[] text = System.IO.File.ReadAllLines(file);
+
+                        foreach (var addedLine in addedLinesPerCommit)
                         {
-                            var NameMethods = GetMethodsName(file);
-                            var NameClass = GetClassName(file);
-
-                            
-                            foreach (var klass in NameClass)
+                            var removedSpecialCharactersString = addedLine.Replace("\n+", "");
+                            if (text.Contains(removedSpecialCharactersString))
                             {
-                                Console.WriteLine("classes: " + klass);
+                                continue;
                             }
-                            foreach (var method in NameMethods)
-                            {
-                                Console.WriteLine("methods: " + method);
-                            }
-
+                            else goto flag;
+                           
                         }
-                              
-                                     
-                            
 
 
-                             //     int x = text.CompareTo(Convert.ToString(addedLinesPerCommit));                        
-                      /*       if (text.Contains(Convert.ToString(addedLinesPerCommit)))
-                             {
-                               
-                            var NameMethods = GetMethodsName(file);
-                            var NameClass = GetClassName(file);
-                            foreach (var method in NameMethods)
-                            {
-                                Console.WriteLine("METHODS: " + method);
-                            }
-                            foreach (var klass in NameClass)
-                            {
-                                Console.WriteLine("CLASSES: " + klass);
-                            }
-                        }
-                      */
+                        string klassPattern = @"^.*((public|static|private)\s)?(class)\s.+";
+                        string textKlass = System.IO.File.ReadAllText(file);
+
+                        var regEx = Regex.Match(textKlass, klassPattern, RegexOptions.Multiline);
+                        klasse.Add(Convert.ToString(regEx));                       
+
+                        flag: continue;
+
                     }
-                                                                                                                      
+
+                    Console.WriteLine("\nCommit: <" + message + "> make changes in classes: ");
+                    foreach (var klas in klasse)
+                    {
+                        Console.WriteLine(klas);
+                    }
                 }
+
+                
+
 
                 id = commit.Id.ToString().Substring(0, 7);
                 dateTime = commit.Author.When.LocalDateTime;
                 message = commit.Message;
                 name = commit.Author.Name;
 
-                Console.WriteLine("\n" + id + " " + dateTime + " " + message + " " + name);                           
+                Console.WriteLine("\n" + id + " " + dateTime + " " + message + " " + name);
 
+
+                addedLinesPerCommit.Clear();
+                klasse.Clear();
 
                 previousCommit = commit;
 
@@ -171,7 +173,7 @@ namespace Task1._0._1
             var MethodLines = System.IO.File.ReadAllLines(FileName).Where((a => (a.Contains("protected") ||
                                             a.Contains("private") ||
                                             a.Contains("public")) &&
-                                            !a.Contains("class")));
+                                            !a.Contains("_")&&!a.Contains("class")));
 
             foreach (var item in MethodLines)
             {
@@ -182,29 +184,7 @@ namespace Task1._0._1
                 }
             }
             return methods.Distinct().ToList();
-        }
-
-
-
-        public List<string> GetClassName(string FileName)
-        {
-            List<string> classes = new List<string>();
-            var ClassLines = System.IO.File.ReadAllLines(FileName).Where((a => ((a.Contains("private") ||
-                                            a.Contains("public") ||
-                                            a.Contains("static")) &&
-                                            a.Contains("class"))||a.Contains("class")));
-
-
-            foreach (var item in ClassLines)
-            {
-                if (item.IndexOf("{") != -1)
-                {
-                    string temp = string.Join("", item.Substring(0, item.IndexOf("{")).Reverse());
-                    classes.Add(string.Join("", temp.Substring(0, temp.IndexOf(" ")).Reverse()));
-                }
-            }
-            return classes.Distinct().ToList();
-        }
+        }    
 
 
     }
