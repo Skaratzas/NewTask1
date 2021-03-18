@@ -84,23 +84,8 @@ namespace Task1._0._1
                         
                     }
 
+                                                          
                     
-                    
-
-    /*                string text = System.IO.File.ReadAllText(@"C:\GitHub\repository\Program.cs");  
-                    if (text.Contains(Convert.ToString(addedLinesPerCommit)))
-                    {
-                        foreach (Match match in Regex.Matches(text, klassPattern, RegexOptions.Multiline))
-                        {
-                            klasse.Add(match.Value);
-                        }
-                    }
-                                                                                                 
-    */
-
-                    
-                    
-
                     string[] Files = System.IO.Directory.GetFiles(@"C:\GitHub\repository", "*.cs");
                    
                     foreach (string file in Files)
@@ -111,14 +96,19 @@ namespace Task1._0._1
                         repository.CheckoutPaths(previousCommit.Sha, checkoutPaths, options);
 
 
-
-
-
                         string[] text = System.IO.File.ReadAllLines(file);
 
                         foreach (var addedLine in addedLinesPerCommit)
-                        {
-                            var removedSpecialCharactersString = addedLine.Replace("\n+", "");
+                        {     
+                            
+                            string removedSpecialCharactersString = addedLine;
+                            string[] specialCharacter = { "\n ", "\n+" };
+
+                            foreach(string sc in specialCharacter)
+                            {
+                                removedSpecialCharactersString = removedSpecialCharactersString.Replace(sc, null);
+                            }
+                            
                             if (text.Contains(removedSpecialCharactersString))
                             {
                                 continue;
@@ -146,7 +136,6 @@ namespace Task1._0._1
                 }
 
                 
-
 
                 id = commit.Id.ToString().Substring(0, 7);
                 dateTime = commit.Author.When.LocalDateTime;
