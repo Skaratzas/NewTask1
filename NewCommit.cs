@@ -83,8 +83,7 @@ namespace Task1._0._1
                         }
                         
                     }
-
-                                                          
+                                                        
                     
                     string[] Files = System.IO.Directory.GetFiles(@"C:\GitHub\repository", "*.cs");
                    
@@ -102,9 +101,9 @@ namespace Task1._0._1
                         {     
                             
                             string removedSpecialCharactersString = addedLine;
-                            string[] specialCharacter = { "\n ", "\n+" };
+                            string[] specialCharacters = { "\n ", "\n+" };
 
-                            foreach(string sc in specialCharacter)
+                            foreach(string sc in specialCharacters)
                             {
                                 removedSpecialCharactersString = removedSpecialCharactersString.Replace(sc, null);
                             }
@@ -118,23 +117,39 @@ namespace Task1._0._1
                         }
 
 
-                        string klassPattern = @"^.*((public|static|private)\s)?(class)\s.+";
-                        string textKlass = System.IO.File.ReadAllText(file);
+                        string input = System.IO.File.ReadAllText(file);
 
-                        var regEx = Regex.Match(textKlass, klassPattern, RegexOptions.Multiline);
-                        klasse.Add(Convert.ToString(regEx));                       
+                        string klassPattern = @"\b((public|static|private)\s)?(class)\s.+";
+                        
+                        foreach(Match match in Regex.Matches(input, klassPattern, RegexOptions.Multiline))
+                        {
+                            klasse.Add(match.Value);
+                        }
+                        
+
+                        string methodPattern = @"\b(public|private|protected|static)\s*" + @"\b(static|virtual|abstract|void)\s*[a-zA-Z]*\s[a-zA-Z]+\s*";
+                        foreach(Match match in Regex.Matches(input, methodPattern, RegexOptions.Multiline))
+                         {
+                             methods.Add(match.Value);
+                         }
+                       
 
                         flag: continue;
 
                     }
 
                     Console.WriteLine("\nCommit: <" + message + "> make changes in classes: ");
-                    foreach (var klas in klasse)
+                    foreach (var aKlasse in klasse)
                     {
-                        Console.WriteLine(klas);
+                        Console.WriteLine(aKlasse);
+                    }
+
+                    Console.WriteLine(" and in methods: ");
+                    foreach(var method in methods)
+                    {
+                        Console.WriteLine(method);
                     }
                 }
-
                 
 
                 id = commit.Id.ToString().Substring(0, 7);
@@ -147,34 +162,11 @@ namespace Task1._0._1
 
                 addedLinesPerCommit.Clear();
                 klasse.Clear();
+                methods.Clear();
 
                 previousCommit = commit;
 
-             }
-           
-        }
-
-       
-
-        public List<string> GetMethodsName(string FileName)
-        {
-            List<string> methods = new List<string>();
-            var MethodLines = System.IO.File.ReadAllLines(FileName).Where((a => (a.Contains("protected") ||
-                                            a.Contains("private") ||
-                                            a.Contains("public")) &&
-                                            !a.Contains("_")&&!a.Contains("class")));
-
-            foreach (var item in MethodLines)
-            {
-                if (item.IndexOf("(") != -1)
-                {
-                    string temp = string.Join("", item.Substring(0, item.IndexOf("(")).Reverse());
-                    methods.Add(string.Join("", temp.Substring(0, temp.IndexOf(" ")).Reverse()));
-                }
-            }
-            return methods.Distinct().ToList();
-        }    
-
-
+             }           
+        }   
     }
 }
