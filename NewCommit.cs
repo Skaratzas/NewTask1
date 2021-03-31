@@ -1,6 +1,7 @@
 using LibGit2Sharp;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -42,6 +43,7 @@ namespace Task1._0._1
             var commits = repository.Commits;
             Console.WriteLine("Commits: ");
             Commit previousCommit = null;
+
             foreach (var commit in commits)
             {
                 
@@ -52,16 +54,9 @@ namespace Task1._0._1
                                       
 
                     foreach (var pec in patch)
-                    {
-                        Console.WriteLine("{0} Lines changed: {1} = ({2}+ and {3}-)",
-                            pec.Patch,
-                            pec.LinesAdded + pec.LinesDeleted,
-                            pec.LinesAdded,
-                            pec.LinesDeleted);
-                     
+                    {                    
                                              
-                        string input = pec.Patch;
-                                                                                          
+                        string input = pec.Patch;                                                                                        
                        
                         string addedPattern = @"^\+\s.*$";
                         foreach (Match match in Regex.Matches(input, addedPattern, RegexOptions.Multiline))
@@ -83,19 +78,25 @@ namespace Task1._0._1
                         }
                         
                     }
-                                                        
+
                     
+                    flag2: ;
                     string[] Files = System.IO.Directory.GetFiles(@"C:\GitHub\repository", "*.cs");
                    
                     foreach (string file in Files)
                     {
-
                         var checkoutPaths = new[] { file };
-                        CheckoutOptions options = new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force };
+                        CheckoutOptions options = new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force };   
                         repository.CheckoutPaths(previousCommit.Sha, checkoutPaths, options);
+                                           
+
+                        if(!File.Exists(file))
+                        {
+                            goto flag2;
+                        }
 
 
-                        string[] text = System.IO.File.ReadAllLines(file);
+                        string[] text = System.IO.File.ReadAllLines(Convert.ToString(file));
 
                         foreach (var addedLine in addedLinesPerCommit)
                         {     
@@ -157,16 +158,17 @@ namespace Task1._0._1
                 message = commit.Message;
                 name = commit.Author.Name;
 
-                Console.WriteLine("\n" + id + " " + dateTime + " " + message + " " + name);
-
 
                 addedLinesPerCommit.Clear();
                 klasse.Clear();
                 methods.Clear();
 
-                previousCommit = commit;
+                previousCommit = commit;             
 
-             }           
-        }   
-    }
+             }
+            
+            repository.Reset(ResetMode.Hard, repository.Head.Tip);
+         
+        }        
+    }   
 }
