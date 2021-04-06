@@ -54,8 +54,8 @@ namespace Task1._0._1
                                       
 
                     foreach (var pec in patch)
-                    {                    
-                                             
+                    {
+                        
                         string input = pec.Patch;                                                                                        
                        
                         string addedPattern = @"^\+\s.*$";
@@ -76,70 +76,74 @@ namespace Task1._0._1
                         {                      
                             addedLinesPerCommit.Add(match.Value);                                                      
                         }
-                        
-                    }
 
-                    
-                    flag2: ;
-                    string[] Files = System.IO.Directory.GetFiles(@"C:\GitHub\repository", "*.cs");
-                   
-                    foreach (string file in Files)
-                    {
-                        var checkoutPaths = new[] { file };
-                        CheckoutOptions options = new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force };   
-                        repository.CheckoutPaths(previousCommit.Sha, checkoutPaths, options);
-                                           
-
-                        if(!File.Exists(file))
+                        if(addedLinesPerCommit.Count!=0)
                         {
-                            goto flag2;
-                        }
+                            flag2:;
+                            string[] Files = System.IO.Directory.GetFiles(@"C:\GitHub\repository", "*.cs");
 
-
-                        string[] text = System.IO.File.ReadAllLines(Convert.ToString(file));
-
-                        foreach (var addedLine in addedLinesPerCommit)
-                        {     
-                            
-                            string removedSpecialCharactersString = addedLine;
-                            string[] specialCharacters = { "\n ", "\n+" };
-
-                            foreach(string sc in specialCharacters)
+                            foreach (string file in Files)
                             {
-                                removedSpecialCharactersString = removedSpecialCharactersString.Replace(sc, null);
+                                var checkoutPaths = new[] { file };
+                                CheckoutOptions options = new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force };
+                                repository.CheckoutPaths(previousCommit.Sha, checkoutPaths, options);
+
+
+                                if (!File.Exists(file))
+                                {
+                                    goto flag2;
+                                }
+
+
+                                string[] text = System.IO.File.ReadAllLines(Convert.ToString(file));
+
+                                foreach (var addedLine in addedLinesPerCommit)
+                                {
+
+                                    string removedSpecialCharactersString = addedLine;
+                                    string[] specialCharacters = { "\n ", "\n+" };
+
+                                    foreach (string sc in specialCharacters)
+                                    {
+                                        removedSpecialCharactersString = removedSpecialCharactersString.Replace(sc, null);
+                                    }
+
+                                    if (text.Contains(removedSpecialCharactersString))
+                                    {
+                                        continue;
+                                    }
+                                    else goto flag;
+
+                                }
+
+
+                                string input2 = System.IO.File.ReadAllText(file);
+
+                                string klassPattern = @"\b((public|static|private)\s)?(class)\s.+";
+
+                                foreach (Match match in Regex.Matches(input2, klassPattern, RegexOptions.Multiline))
+                                {
+                                    klasse.Add(match.Value);
+                                }
+
+
+                                string methodPattern = @"\b(public|private|protected|static)\s*" + @"\b(static|virtual|abstract|void)\s*[a-zA-Z]*\s[a-zA-Z]+\s*";
+                                foreach (Match match in Regex.Matches(input2, methodPattern, RegexOptions.Multiline))
+                                {
+                                    methods.Add(match.Value);
+                                }
+
+
+                                flag: continue;
                             }
-                            
-                            if (text.Contains(removedSpecialCharactersString))
-                            {
-                                continue;
-                            }
-                            else goto flag;
-                           
+
                         }
 
+                        addedLinesPerCommit.Clear();
 
-                        string input = System.IO.File.ReadAllText(file);
+                    }                                   
 
-                        string klassPattern = @"\b((public|static|private)\s)?(class)\s.+";
-                        
-                        foreach(Match match in Regex.Matches(input, klassPattern, RegexOptions.Multiline))
-                        {
-                            klasse.Add(match.Value);
-                        }
-                        
-
-                        string methodPattern = @"\b(public|private|protected|static)\s*" + @"\b(static|virtual|abstract|void)\s*[a-zA-Z]*\s[a-zA-Z]+\s*";
-                        foreach(Match match in Regex.Matches(input, methodPattern, RegexOptions.Multiline))
-                         {
-                             methods.Add(match.Value);
-                         }
-                       
-
-                        flag: continue;
-
-                    }
-
-                    Console.WriteLine("\nCommit: <" + message + "> make changes in classes: ");
+                    Console.WriteLine("\nCommit: " + message + ", make changes in classes: ");
                     foreach (var aKlasse in klasse)
                     {
                         Console.WriteLine(aKlasse);
@@ -158,8 +162,7 @@ namespace Task1._0._1
                 message = commit.Message;
                 name = commit.Author.Name;
 
-
-                addedLinesPerCommit.Clear();
+              
                 klasse.Clear();
                 methods.Clear();
 
