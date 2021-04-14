@@ -14,9 +14,7 @@ namespace Task1._0._1
         public string message { get; set; }
         public string name { get; set; }
         Repository repository { get; set; }
-        public List<string> addedLines = new List<string>();
-        public List<string> removedLines = new List<string>();
-        List<string> klasse = new List<string>();
+        List<string> classes = new List<string>();
         List<string> addedLinesPerCommit = new List<string>();
         List<string> methods = new List<string>();
         
@@ -41,137 +39,132 @@ namespace Task1._0._1
         {
             
             var commits = repository.Commits;
-            Console.WriteLine("Commits: ");
+            
             Commit previousCommit = null;
 
             foreach (var commit in commits)
             {
-                
+               
                 if (previousCommit != null)
                 {
-                    var patch = repository.Diff.Compare<Patch>(commit.Tree, previousCommit.Tree);
-                    var patch2 = patch.Content;
-                                      
+                    var patch = repository.Diff.Compare<Patch>(commit.Tree, previousCommit.Tree);                                     
 
                     foreach (var pec in patch)
                     {
                         
                         string input = pec.Patch;                                                                                        
-                       
-                        string addedPattern = @"^\+\s.*$";
-                        foreach (Match match in Regex.Matches(input, addedPattern, RegexOptions.Multiline))
-                        {
-                            addedLines.Add(match.Value);
-                        }
-
-                        string removedPattern = @"^\-\s.*$";
-                        foreach (Match match in Regex.Matches(input, removedPattern, RegexOptions.Multiline))
-                        {
-                            removedLines.Add(match.Value);
-                        }
-
-
+                                           
                         string newPattern = @"(?<=^\+)\s.*$";
                         foreach (Match match in Regex.Matches(input, newPattern, RegexOptions.Multiline))
                         {                      
                             addedLinesPerCommit.Add(match.Value);                                                      
                         }
 
-                        if(addedLinesPerCommit.Count!=0)
+                        if (addedLinesPerCommit.Count!=0)
                         {
-                            flag2:;
+
                             string[] Files = System.IO.Directory.GetFiles(@"C:\GitHub\repository", "*.cs");
 
                             foreach (string file in Files)
                             {
-                                var checkoutPaths = new[] { file };
-                                CheckoutOptions options = new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force };
-                                repository.CheckoutPaths(previousCommit.Sha, checkoutPaths, options);
-
-
-                                if (!File.Exists(file))
-                                {
-                                    goto flag2;
-                                }
-
-
-                                string[] text = System.IO.File.ReadAllLines(Convert.ToString(file));
-
-                                foreach (var addedLine in addedLinesPerCommit)
-                                {
-
-                                    string removedSpecialCharactersString = addedLine;
-                                    string[] specialCharacters = { "\n ", "\n+" };
-
-                                    foreach (string sc in specialCharacters)
-                                    {
-                                        removedSpecialCharactersString = removedSpecialCharactersString.Replace(sc, null);
-                                    }
-
-                                    if (text.Contains(removedSpecialCharactersString))
-                                    {
-                                        continue;
-                                    }
-                                    else goto flag;
-
-                                }
-
-
-                                string input2 = System.IO.File.ReadAllText(file);
-
-                                string klassPattern = @"\b((public|static|private)\s)?(class)\s.+";
-
-                                foreach (Match match in Regex.Matches(input2, klassPattern, RegexOptions.Multiline))
-                                {
-                                    klasse.Add(match.Value);
-                                }
-
-
-                                string methodPattern = @"\b(public|private|protected|static)\s*" + @"\b(static|virtual|abstract|void)\s*[a-zA-Z]*\s[a-zA-Z]+\s*";
-                                foreach (Match match in Regex.Matches(input2, methodPattern, RegexOptions.Multiline))
-                                {
-                                    methods.Add(match.Value);
-                                }
-
-
-                                flag: continue;
+                                // checks in which folders each commit makes changes to
+                                check(file, previousCommit);     
+                                
                             }
 
                         }
-
                         addedLinesPerCommit.Clear();
 
-                    }                                   
-
-                    Console.WriteLine("\nCommit: " + message + ", make changes in classes: ");
-                    foreach (var aKlasse in klasse)
-                    {
-                        Console.WriteLine(aKlasse);
                     }
-
-                    Console.WriteLine(" and in methods: ");
-                    foreach(var method in methods)
-                    {
-                        Console.WriteLine(method);
-                    }
+                    printClassAndMethods(classes, methods);
+                    
                 }
                 
-
                 id = commit.Id.ToString().Substring(0, 7);
                 dateTime = commit.Author.When.LocalDateTime;
                 message = commit.Message;
                 name = commit.Author.Name;
 
               
-                klasse.Clear();
+                classes.Clear();
                 methods.Clear();
 
                 previousCommit = commit;             
 
              }
             
-            repository.Reset(ResetMode.Hard, repository.Head.Tip);
-         
-        }        
+            repository.Reset(ResetMode.Hard, repository.Head.Tip);         
+        }
+        
+
+
+        private void check(string file, Commit previousCommit)
+        {
+            var checkoutPaths = new[] { file };
+            CheckoutOptions options = new CheckoutOptions { CheckoutModifiers = CheckoutModifiers.Force };
+            repository.CheckoutPaths(previousCommit.Sha, checkoutPaths, options);
+
+            if (!File.Exists(file))
+            {
+                return;
+            }
+
+            string[] text = System.IO.File.ReadAllLines(Convert.ToString(file));
+
+            foreach (var addedLine in addedLinesPerCommit)
+            {
+
+                string removedSpecialCharactersString = addedLine;
+                string[] specialCharacters = { "\n ", "\n+" };
+
+                foreach (string sc in specialCharacters)
+                {
+                    removedSpecialCharactersString = removedSpecialCharactersString.Replace(sc, null);
+                }
+
+                if (text.Contains(removedSpecialCharactersString))
+                {
+                    continue;
+                }
+                else return;
+
+            }
+
+            string input = System.IO.File.ReadAllText(file);
+
+            CalculateClassAndMethods(input);
+        }
+
+        private void CalculateClassAndMethods(string input)
+        {
+            string klassPattern = @"\b((public|static|private)\s)?(class)\s.+";
+
+            foreach (Match match in Regex.Matches(input, klassPattern, RegexOptions.Multiline))
+            {
+                classes.Add(match.Value);
+            }
+
+
+            string methodPattern = @"\b(public|private|protected|static)\s*" + @"\b(static|virtual|abstract|void)\s*[a-zA-Z]*\s[a-zA-Z]+\s*";
+            foreach (Match match in Regex.Matches(input, methodPattern, RegexOptions.Multiline))
+            {
+                methods.Add(match.Value);
+            }
+        }
+
+        private void printClassAndMethods(List<string> classes, List<string> methods)
+        {
+            Console.WriteLine("\nCommit: " + message + ", make changes in classes: ");
+            foreach (var aClass in classes)
+            {
+                Console.WriteLine(aClass);
+            }
+
+            Console.WriteLine(" and in methods: ");
+            foreach (var method in methods)
+            {
+                Console.WriteLine(method);
+            }
+        }
     }   
 }
